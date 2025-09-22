@@ -60,8 +60,8 @@ export function MobileMenu({ onClose }: MobileMenuProps) {
             className="text-lg sm:text-xl relative pl-4 font-medium transition-transform duration-300 ease-in-out hover:scale-105 group"
             style={{ fontFamily: 'var(--font-main-right)' }}
           >
-            <sup className="text-2xl sm:text-3xl md:text-4xl font-thin absolute -top-3 left-0 text-[var(--text-color-secondary)] transition-colors duration-300 ease-in-out group-hover:text-[var(--accent-color)]">"</sup>
-            Infosec ISM
+            {/* <sup className="text-2xl sm:text-3xl md:text-4xl font-thin absolute -top-3 left-0 text-[var(--text-color-secondary)] transition-colors duration-300 ease-in-out group-hover:text-[var(--accent-color)]"></sup> */}
+            CtrlXploit
           </Link>
           <button
             onClick={onClose}

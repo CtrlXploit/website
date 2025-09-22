@@ -5,8 +5,8 @@ import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 
 export const metadata: Metadata = {
-  title: 'Infosec ISM',
-  description: 'Cybersecurity division of Cyberlabs, IIT ISM Dhanbad.',
+  title: 'CtrlXploit',
+  description: 'CTF team from IIT ISM Dhanbad.',
 };
 
 export default function RootLayout({
