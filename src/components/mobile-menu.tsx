@@ -15,7 +15,7 @@ const mainNav = [
 ];
 
 const secondaryNav = [
-  { label: "Projects", href: "#" },
+  { label: "Projects", href: "/projects" },
   { label: "Wargames", href: "#" },
   { label: "Blog", href: "#" },
   { label: "Resources", href: "/resources" },
