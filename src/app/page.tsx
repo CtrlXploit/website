@@ -2,7 +2,17 @@ import GlitchText from "@/components/GlitchText";
 import { AnimatedText } from "@/components/AnimatedText";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ArrowRight, Shield, Users, Code, Trophy, Calendar, MessageCircle, Star } from "lucide-react";
+import {
+  ArrowRight,
+  Shield,
+  Users,
+  Code,
+  Trophy,
+  Calendar,
+  MessageCircle,
+  Star,
+  School,
+} from "lucide-react";
 
 export default function Home() {
   return (
@@ -16,14 +26,21 @@ export default function Home() {
             enableOnHover={true}
             className="whitespace-nowrap mb-8"
           >
-            CtrlXploit
+            Infosec
           </GlitchText>
           <div className="glass rounded-xl p-8 max-w-4xl mx-auto">
             <h2 className="text-xl md:text-2xl font-bold text-primary mb-4">
-              CTF team from IIT ISM Dhanbad
+              @Cyberlabs IIT (ISM) Dhanbad
             </h2>
             <p className="text-lg md:text-xl text-foreground/90 leading-relaxed">
-              Elite cybersecurity team specializing in competitive hacking, penetration testing, and security research.
+              Information Security division of Cyberlabs IIT (ISM) Dhanbad. We
+              are a team of passionate individuals dedicated to exploring the
+              realms of cybersecurity.
+              <br />
+              <br />
+              Join us as we delve into the world of vulnerabilities, exploits,
+              and digital defense strategies, fostering a culture of security
+              awareness and innovation.
             </p>
             <div className="flex flex-wrap justify-center gap-4 mt-6">
               <div className="flex items-center gap-2 bg-primary/10 text-primary px-3 py-1 rounded-full text-sm glass-subtle">
@@ -32,11 +49,11 @@ export default function Home() {
               </div>
               <div className="flex items-center gap-2 bg-primary/10 text-primary px-3 py-1 rounded-full text-sm glass-subtle">
                 <Users className="w-4 h-4" />
-                Elite Team
+                Cyberlabs
               </div>
               <div className="flex items-center gap-2 bg-primary/10 text-primary px-3 py-1 rounded-full text-sm glass-subtle">
-                <Code className="w-4 h-4" />
-                CTF Masters
+                <School className="w-4 h-4" />
+                IIT (ISM) Dhanbad
               </div>
             </div>
           </div>
@@ -55,4 +72,3 @@ export default function Home() {
     </div>
   );
 }
-

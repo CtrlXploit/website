@@ -8,7 +8,7 @@ export function Footer() {
     <footer className="w-full border-t border-border mt-auto">
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center text-center md:text-left gap-4 px-4 py-8">
         <p className="text-muted-foreground text-sm">
-          &copy; {new Date().getFullYear()} CtrlXploit. All rights reserved.
+          &copy; {new Date().getFullYear()} Infosec@Cyberlabs.
         </p>
         <div className="flex gap-6">
           <Link

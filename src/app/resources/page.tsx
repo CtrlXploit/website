@@ -46,9 +46,8 @@ export default function Resources() {
             Resources
           </GlitchText>
           <p className="text-xl text-foreground/80 max-w-3xl mx-auto leading-relaxed">
-            Dive into a curated collection of essential learning materials,
-            powerful tools, and leading platforms designed for cybersecurity
-            enthusiasts and professionals.
+            Curated Collection of resources to get you started and help you
+            advance in the field of Information Security.
           </p>
         </header>
 
