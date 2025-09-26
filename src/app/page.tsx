@@ -28,7 +28,7 @@ export default function Home() {
           >
             Infosec
           </GlitchText>
-          <div className="glass rounded-xl p-8 max-w-4xl mx-auto">
+          <div className="rounded-xl p-8 max-w-4xl mx-auto">
             <h2 className="text-xl md:text-2xl font-bold text-primary mb-4">
               @Cyberlabs IIT (ISM) Dhanbad
             </h2>
@@ -38,10 +38,11 @@ export default function Home() {
               realms of cybersecurity.
               <br />
               <br />
-              Join us as we delve into the world of vulnerabilities, exploits,
-              and digital defense strategies, fostering a culture of security
-              awareness and innovation.
+              We organize workshops, host events, and participate in various CTF
+              competitions to spread and enhance our skills and knowledge in the
+              field of information security.
             </p>
+            <p className="mt-6 text-foreground/80">Join us!</p>
             <div className="flex flex-wrap justify-center gap-4 mt-6">
               <div className="flex items-center gap-2 bg-primary/10 text-primary px-3 py-1 rounded-full text-sm glass-subtle">
                 <Shield className="w-4 h-4" />
