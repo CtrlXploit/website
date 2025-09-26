@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { Github } from "lucide-react";
 import { LiaDiscord } from "react-icons/lia";
 

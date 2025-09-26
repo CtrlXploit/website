@@ -1,24 +1,19 @@
 "use client";
 import { useState } from "react";
 import { projects } from "@/data/projects";
-import { ExternalLink, Github, Star, Search, Filter } from "lucide-react";
+import { ExternalLink, Github, Search } from "lucide-react";
 import GlitchText from "@/components/GlitchText";
+import Image from "next/image";
 
 export default function ProjectsPage() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedTech, setSelectedTech] = useState<string>("all");
-
-  // Get all unique technologies
-  const allTechnologies = Array.from(
-    new Set(projects.flatMap(project => project.technologies))
-  ).sort();
 
   // Filter projects based on search and technology
-  const filteredProjects = projects.filter(project => {
-    const matchesSearch = project.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         project.shortDetail.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesTech = selectedTech === "all" || project.technologies.includes(selectedTech);
-    return matchesSearch && matchesTech;
+  const filteredProjects = projects.filter((project) => {
+    const matchesSearch =
+      project.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      project.shortDetail.toLowerCase().includes(searchTerm.toLowerCase());
+    return matchesSearch;
   });
 
   const regularProjects = filteredProjects;
@@ -36,8 +31,9 @@ export default function ProjectsPage() {
           Our Projects
         </GlitchText>
         <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-          Explore our collection of cutting-edge cybersecurity tools, educational platforms, 
-          and open-source contributions that strengthen digital security across various domains.
+          Explore our collection of cutting-edge cybersecurity tools,
+          educational platforms, and open-source contributions that strengthen
+          digital security across various domains.
         </p>
       </div>
 
@@ -54,12 +50,8 @@ export default function ProjectsPage() {
               className="w-full pl-10 pr-4 py-3 bg-card border border-border rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
             />
           </div>
-          
-          
         </div>
       </div>
-
-      
 
       {/* All Projects Section */}
       <section>
@@ -80,23 +72,25 @@ export default function ProjectsPage() {
           </div>
         ) : (
           <div className="glass rounded-xl p-12 text-center">
-            <div className="text-muted-foreground text-lg">No projects found matching your criteria.</div>
+            <div className="text-muted-foreground text-lg">
+              No projects found matching your criteria.
+            </div>
           </div>
         )}
       </section>
-
-      
     </div>
   );
 }
 
 // Regular Project Card
-function ProjectCard({ project }: { project: any }) {
+function ProjectCard({ project }: { project: (typeof projects)[0] }) {
   return (
     <div className="group glass rounded-xl hover:bg-card/50 p-0 overflow-hidden transition-all duration-500 border-2 border-border hover:border-primary/20">
       {/* Project Image */}
       <div className="relative overflow-hidden">
-        <img
+        <Image
+          width={400}
+          height={160}
           src={project.imageUrl}
           alt={project.name}
           className="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-500"
@@ -115,14 +109,16 @@ function ProjectCard({ project }: { project: any }) {
 
         {/* Technologies */}
         <div className="flex flex-wrap gap-1 mb-4">
-          {project.technologies.slice(0, 3).map((tech: string, index: number) => (
-            <span
-              key={index}
-              className="px-2 py-1 bg-primary/10 text-primary text-xs rounded border border-primary/20"
-            >
-              {tech}
-            </span>
-          ))}
+          {project.technologies
+            .slice(0, 3)
+            .map((tech: string, index: number) => (
+              <span
+                key={index}
+                className="px-2 py-1 bg-primary/10 text-primary text-xs rounded border border-primary/20"
+              >
+                {tech}
+              </span>
+            ))}
           {project.technologies.length > 3 && (
             <span className="px-2 py-1 bg-card text-muted-foreground text-xs rounded border border-border">
               +{project.technologies.length - 3}
@@ -157,4 +153,3 @@ function ProjectCard({ project }: { project: any }) {
     </div>
   );
 }
-
