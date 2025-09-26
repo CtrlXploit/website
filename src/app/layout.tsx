@@ -3,6 +3,13 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
+import { Fira_Code } from "next/font/google";
+
+const firaCode = Fira_Code({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-fira-code",
+});
 
 export const metadata: Metadata = {
   title: "Infosec",
@@ -28,7 +35,9 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="font-sans antialiased flex flex-col min-h-screen">
+      <body
+        className={`${firaCode.variable} font-mono antialiased flex flex-col min-h-screen`}
+      >
         <Header />
         <main className="relative flex flex-1 flex-col items-center justify-center p-4">
           {children}

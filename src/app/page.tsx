@@ -11,7 +11,7 @@ export default function Home() {
             speed={1}
             enableShadows={true}
             enableOnHover={true}
-            className="whitespace-nowrap mb-8"
+            className="whitespace-nowrap"
           >
             Infosec
           </GlitchText>

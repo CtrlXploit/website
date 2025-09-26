@@ -17,7 +17,7 @@ const GlitchText = ({
   };
 
   const baseClasses =
-    "text-white text-[clamp(2rem,10vw,8rem)] font-black relative inline-block select-none cursor-pointer";
+    "text-white text-[clamp(2rem,10vw,8rem)] font-black relative inline-block select-none cursor-pointer font-sans";
   // ⬆️ changed mx-auto -> inline-block so container fits text width
 
   const pseudoClasses = !enableOnHover
