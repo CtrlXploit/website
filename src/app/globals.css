@@ -33,13 +33,15 @@
   }
 
   .dark {
-    --background: 0 0% 0%;
+    --background: 240, 5%, 11%;
     --foreground: 0 0% 100%;
     --card: 0 0% 4%;
     --card-foreground: 0 0% 98%;
     --popover: 0 0% 4%;
     --popover-foreground: 0 0% 98%;
-    --primary: 235 85% 64%;
+    --primary: 0,
+      66%,
+      55%;
     --primary-foreground: 0 0% 0%;
     --secondary: 0 0% 8%;
     --secondary-foreground: 0 0% 98%;
@@ -59,9 +61,10 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
-    background-color: #000000;
+    background-color: 0, 14%, 10%;
     background-image:
       linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
       linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
@@ -69,21 +72,21 @@
     background-attachment: fixed;
     min-height: 100vh;
   }
-  
+
   /* Discord-inspired scrollbar */
   ::-webkit-scrollbar {
     width: 8px;
   }
-  
+
   ::-webkit-scrollbar-track {
     background: #202225;
   }
-  
+
   ::-webkit-scrollbar-thumb {
     background: #5865f2;
     border-radius: 4px;
   }
-  
+
   ::-webkit-scrollbar-thumb:hover {
     background: #4752c4;
   }
