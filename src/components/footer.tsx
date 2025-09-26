@@ -1,5 +1,7 @@
-import Link from 'next/link';
-import { Github, Twitter, Linkedin } from 'lucide-react';
+import Link from "next/link";
+import Image from "next/image";
+import { Github } from "lucide-react";
+import { LiaDiscord } from "react-icons/lia";
 
 export function Footer() {
   return (
@@ -9,17 +11,19 @@ export function Footer() {
           &copy; {new Date().getFullYear()} CtrlXploit. All rights reserved.
         </p>
         <div className="flex gap-6">
-          <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">
+          <Link
+            href="https://github.com/CyberLabs-Infosec/"
+            className="text-muted-foreground hover:text-primary transition-colors"
+          >
             <Github className="h-5 w-5" />
             <span className="sr-only">GitHub</span>
           </Link>
-          <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">
-            <Twitter className="h-5 w-5" />
-            <span className="sr-only">Twitter</span>
-          </Link>
-          <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">
-            <Linkedin className="h-5 w-5" />
-            <span className="sr-only">LinkedIn</span>
+          <Link
+            href="https://discord.gg/sMtk8ePEJB"
+            className="hover:opacity-80 transition-opacity"
+          >
+            <LiaDiscord className="h-5 w-5 text-muted-foreground" />
+            <span className="sr-only">Discord</span>
           </Link>
         </div>
       </div>
