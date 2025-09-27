@@ -19,7 +19,7 @@ export default function EventsPage() {
     organizer: "CyberLabs, IIT (ISM) Dhanbad",
     description:
       "Pearl CTF is our flagship global cybersecurity competition, featuring challenges from various categories including Web exploitation, Pwn, Forensics, Reverse Engineering, Cryptography, and more.",
-    prizePool: "$1000",
+    prizePool: "1000",
     website: "https://pearlctf.in/",
     status: "Annual Global Event",
     categories: [
@@ -187,9 +187,6 @@ export default function EventsPage() {
           <Calendar className="w-8 h-8 text-primary" />
           <h2 className="text-3xl font-bold text-foreground">
             Regular Events
-            <span className="text-sm text-muted-foreground bg-card/50 px-3 py-1 rounded-full border border-border ml-3">
-              {otherEvents.length}
-            </span>
           </h2>
         </div>
 
