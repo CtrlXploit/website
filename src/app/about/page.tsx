@@ -1,96 +1,9 @@
 "use client";
-import { Users, Trophy, Crown, Zap } from "lucide-react";
 import React from "react";
-
 import GlitchText from "@/components/GlitchText";
+import { levels, levelDetails, levelOrder } from "@/data/members";
 
 export default function Members() {
-  const levels = {
-    root: [
-      "TheAlpha",
-      "begula03",
-      "SRPG",
-      "Al13n",
-      "hidden_truth",
-      "Masrt",
-      "naughtyb0y.",
-      "v1per",
-    ],
-    moderator: [
-      "4darsh",
-      "e4stw1nd",
-      "s4ych33se",
-      "kannaya",
-      "izmelucifer17",
-      "Pr0meth3u5",
-      "n0tsane",
-    ],
-    "sys-admin": [
-      "bond@james",
-      "SPYD3R",
-      "_a.p.d_",
-      "Cypher",
-      "Ace_",
-      "ethereum",
-      "von",
-      "H3lios",
-      "samarth471",
-      "extreme_substance",
-      "_zafeiri",
-    ],
-    club: [
-      "iamgreedy",
-      "armoredvortex",
-      "AMRyan",
-      "MiracleInvoker",
-      "bhanu_praharsha",
-      "cool_enough",
-      "este",
-      "Krißhn@",
-      "Prisha",
-      "parallax_79",
-      "the_tenth_spear",
-      "venomesh",
-    ],
-  };
-
-  const levelDetails: Record<
-    string,
-    {
-      name: string;
-      icon: JSX.Element;
-      color: string;
-      borderColor: string;
-    }
-  > = {
-    root: {
-      name: "Root",
-      icon: <Crown className="w-6 h-6" />,
-      color: "text-emerald-400",
-      borderColor: "border-emerald-400/30 hover:border-emerald-400/60",
-    },
-    moderator: {
-      name: "Moderator",
-      icon: <Trophy className="w-6 h-6" />,
-      color: "text-purple-400",
-      borderColor: "border-purple-400/30 hover:border-purple-400/60",
-    },
-    "sys-admin": {
-      name: "Sys-Admin",
-      icon: <Zap className="w-6 h-6" />,
-      color: "text-rose-400",
-      borderColor: "border-rose-400/30 hover:border-rose-400/60",
-    },
-    club: {
-      name: "Club",
-      icon: <Users className="w-6 h-6" />,
-      color: "text-amber-400",
-      borderColor: "border-amber-400/30 hover:border-amber-400/60",
-    },
-  };
-
-  const levelOrder = ["root", "moderator", "sys-admin", "club"];
-
   return (
     <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center flex flex-col items-center min-h-screen">
       {/* Header */}
