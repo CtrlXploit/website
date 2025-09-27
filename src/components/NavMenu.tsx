@@ -64,7 +64,7 @@ export function NavMenu({ onClose }: navProps) {
             className="text-lg sm:text-xl relative pl-4 font-medium transition-transform duration-300 ease-in-out hover:scale-105 group"
             style={{ fontFamily: "var(--font-main-right)" }}
           >
-            CtrlXploit
+            Infosec
           </Link>
           <button
             onClick={onClose}
