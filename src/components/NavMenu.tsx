@@ -9,7 +9,7 @@ interface navProps {
 
 const mainNav = [
   { label: "About", href: "/about" },
-  { label: "Join Us", href: "#" },
+  { label: "Join Us", href: "/join-us" },
   { label: "Events", href: "/events" },
   { label: "Achievements", href: "#" },
 ];
@@ -40,14 +40,14 @@ export function NavMenu({ onClose }: navProps) {
 
   return (
     <div
-      className="fixed inset-0 z-50 animate-in fade-in-0 backdrop-blur-md"
+      className="fixed inset-0 z-50 animate-in fade-in-0 backdrop-blur-lg"
       style={
         {
-          "--bg-color": "#000000",
-          "--text-color-primary": "#ffffff",
-          "--text-color-secondary": "#b9bbbe",
-          "--accent-color": "#5865f2",
-          "--border-color": "#202225",
+          "--bg-color": "hsl(var(--background))",
+          "--text-color-primary": "hsl(var(--foreground))",
+          "--text-color-secondary": "hsl(var(--muted-foreground))",
+          "--accent-color": "hsl(var(--primary))",
+          "--border-color": "hsl(var(--border))",
           "--font-main-right":
             '"Hubot Sans", "Mona Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif',
           "--font-main-left":
@@ -56,7 +56,7 @@ export function NavMenu({ onClose }: navProps) {
       }
     >
       <div className="hidden md:block absolute top-0 left-10 h-full w-px bg-[var(--border-color)] z-[2]" />
-      <div className="h-full w-full grid grid-rows-[auto_1fr_auto] text-[var(--text-color-primary)] bg-black/80 backdrop-blur-xl">
+      <div className="h-full w-full grid grid-rows-[auto_1fr_auto] text-[var(--text-color-primary)] bg-[var(--bg-color)]/80 backdrop-blur-xl">
         <header className="grid-cols-full flex justify-between items-center py-5 px-10 md:px-16 border-b border-[var(--border-color)]">
           <Link
             href="/"
@@ -64,7 +64,6 @@ export function NavMenu({ onClose }: navProps) {
             className="text-lg sm:text-xl relative pl-4 font-medium transition-transform duration-300 ease-in-out hover:scale-105 group"
             style={{ fontFamily: "var(--font-main-right)" }}
           >
-            {/* <sup className="text-2xl sm:text-3xl md:text-4xl font-thin absolute -top-3 left-0 text-[var(--text-color-secondary)] transition-colors duration-300 ease-in-out group-hover:text-[var(--accent-color)]"></sup> */}
             CtrlXploit
           </Link>
           <button
@@ -76,7 +75,6 @@ export function NavMenu({ onClose }: navProps) {
         </header>
 
         <div className="flex-1 grid md:grid-cols-[1.2fr_1fr] grid-cols-1 overflow-y-auto relative">
-          {/* Horizontal line across both sections on desktop */}
           <div className="hidden md:block absolute top-[6.5rem] left-0 right-0 h-[1px] bg-[var(--border-color)] z-10"></div>
 
           <main className="md:border-r border-b md:border-b-0 border-[var(--border-color)] py-14 px-10 md:px-16 flex flex-col transition-colors duration-300">
@@ -90,7 +88,7 @@ export function NavMenu({ onClose }: navProps) {
                     <Link
                       href={item.href}
                       onClick={onClose}
-                      className="inline-block relative mb-5 pb-2 text-[32px] sm:text-[40px] md:text-[52px] font-normal uppercase tracking-tighter leading-tight text-white opacity-90 transition-all duration-300 group-hover:opacity-30 hover:!opacity-100 after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 after:bg-[var(--accent-color)] after:transition-all after:duration-300 hover:after:w-full"
+                      className="inline-block relative mb-5 pb-2 text-[32px] sm:text-[40px] md:text-[52px] font-normal uppercase tracking-tighter leading-tight text-[var(--text-color-primary)] opacity-90 transition-all duration-300 group-hover:opacity-30 hover:!opacity-100 after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 after:bg-[var(--accent-color)] after:transition-all after:duration-300 hover:after:w-full"
                       style={{
                         fontFamily: "var(--font-main-left)",
                         fontFeatureSettings: '"liga", "ss02"',
