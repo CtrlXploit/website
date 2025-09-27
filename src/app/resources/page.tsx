@@ -1,8 +1,22 @@
-"use client";
-import React from "react";
+import { createClient } from "@/utils/supabase/server";
 import GlitchText from "@/components/GlitchText";
-import { resources } from "@/data/resources";
+// import { resources } from "@/data/resources";
 import { ArrowUpRightIcon } from "@heroicons/react/24/outline";
+
+// This tells Next.js to cache this page and re-fetch the data from Supabase
+// at most once every hour. Adjust the time (in seconds) as needed.
+export const revalidate = 3600;
+
+// It's good practice to define the shape of the data you're fetching.
+// This gives you type safety and autocompletion in your code.
+type Resource = {
+  id: string;
+  created_at: string;
+  heading: string;
+  description: string;
+  category: string;
+  link: string;
+};
 
 // Helper function to create URL-friendly slugs
 const slugify = (text: string) => {
@@ -16,8 +30,52 @@ const slugify = (text: string) => {
     .replace(/-+$/, "");
 };
 
-export default function Resources() {
+export default async function Resources() {
+  const supabase = await createClient();
+
+  const { data: resources, error } = await supabase
+    .from("resources")
+    .select(
+      `
+      id,
+      created_at,
+      heading,
+      description,
+      link,
+      category
+      `
+    )
+    .order("category", { ascending: true });
+
+  if (error) {
+    console.error("Error fetching members:", error);
+    return (
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center flex flex-col items-center min-h-screen">
+        <p className="text-red-500">
+          Could not fetch resources. Please try again later.
+        </p>
+      </div>
+    );
+  }
+
+  if (!resources || resources.length === 0) {
+    return (
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center flex flex-col items-center min-h-screen">
+        <GlitchText
+          speed={1}
+          enableShadows={true}
+          enableOnHover={true}
+          className="whitespace-nowrap text-6xl md:text-7xl lg:text-8xl"
+        >
+          Resources
+        </GlitchText>
+        <p className="text-red-500 mt-8">No resources found in database.</p>
+      </div>
+    );
+  }
+
   // Group resources by category
+  // const groupedResources: Record<string, typeof resources> = {};
   const groupedResources: Record<string, typeof resources> = {};
 
   resources.forEach((resource) => {
@@ -95,7 +153,7 @@ export default function Resources() {
                     >
                       <div className="flex items-start justify-between mb-3">
                         <h3 className="text-2xl font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
-                          {res.title}
+                          {res.heading}
                         </h3>
                         <span className="px-3 py-1 text-xs font-medium rounded-full bg-primary/10 text-primary">
                           {res.category}
