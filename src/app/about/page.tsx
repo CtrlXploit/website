@@ -69,12 +69,6 @@ export default function Members() {
                     }}
                   >
                     <div className="flex items-center gap-2">
-                      <div
-                        className={`w-2 h-2 rounded-full ${levelInfo.color.replace(
-                          "text-",
-                          "bg-"
-                        )} opacity-60 group-hover/member:opacity-100 transition-opacity`}
-                      />
                       <span className="text-foreground/90 group-hover/member:text-foreground text-sm font-medium truncate">
                         {username}
                       </span>

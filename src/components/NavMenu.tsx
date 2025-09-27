@@ -9,7 +9,7 @@ interface navProps {
 
 const mainNav = [
   { label: "About", href: "/about" },
-  { label: "Join Us", href: "/join-us" },
+  { label: <>Join&nbsp;&nbsp;&nbsp;Us</>, href: "/join-us" },
   { label: "Events", href: "/events" },
   { label: "Achievements", href: "#" },
 ];
