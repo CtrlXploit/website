@@ -4,7 +4,7 @@ import { LiaDiscord } from "react-icons/lia";
 
 export function Footer() {
   return (
-    <footer className="w-full border-t border-border mt-auto">
+    <footer className="w-full mt-auto">
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center text-center md:text-left gap-4 px-4 py-8">
         <p className="text-muted-foreground text-sm">
           &copy; {new Date().getFullYear()} Infosec@Cyberlabs.
