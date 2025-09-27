@@ -10,7 +10,7 @@ interface MobileMenuProps {
 const mainNav = [
   { label: "About", href: "/about" },
   { label: "Join Us", href: "#" },
-  { label: "Events", href: "#" },
+  { label: "Events", href: "/events" },
   { label: "Achievements", href: "#" },
 ];
 
