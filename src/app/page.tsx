@@ -27,15 +27,15 @@ export default function Home() {
             </p>
             <p className="mt-6 text-foreground/80">Join us!</p>
             <div className="flex flex-wrap justify-center gap-4 mt-6">
-              <div className="flex items-center gap-2 bg-primary/10 text-primary px-3 py-1 rounded-full text-sm glass-subtle">
+              <div className="flex items-center gap-2 bg-primary/10 text-primary px-3 py-1 rounded-full text-sm">
                 <Shield className="w-4 h-4" />
                 Information Security
               </div>
-              <div className="flex items-center gap-2 bg-primary/10 text-primary px-3 py-1 rounded-full text-sm glass-subtle">
+              <div className="flex items-center gap-2 bg-primary/10 text-primary px-3 py-1 rounded-full text-sm =">
                 <Users className="w-4 h-4" />
                 Cyberlabs
               </div>
-              <div className="flex items-center gap-2 bg-primary/10 text-primary px-3 py-1 rounded-full text-sm glass-subtle">
+              <div className="flex items-center gap-2 bg-primary/10 text-primary px-3 py-1 rounded-full text-sm">
                 <School className="w-4 h-4" />
                 IIT (ISM) Dhanbad
               </div>

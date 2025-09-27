@@ -115,29 +115,4 @@
       linear-gradient(90deg, rgba(255, 255, 255, 0.1) 2px, transparent 2px);
     background-size: 80px 80px;
   }
-
-  /* Glass morphism effects */
-  .glass {
-    backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
-    background-color: transparent;
-    border: none;
-    box-shadow: none;
-  }
-
-  .glass-subtle {
-    backdrop-filter: blur(10px) saturate(150%);
-    -webkit-backdrop-filter: blur(10px) saturate(150%);
-    background-color: transparent;
-    border: none;
-    box-shadow: none;
-  }
-
-  .glass-strong {
-    backdrop-filter: blur(20px) saturate(200%);
-    -webkit-backdrop-filter: blur(20px) saturate(200%);
-    background-color: transparent;
-    border: none;
-    box-shadow: none;
-  }
 }

@@ -38,7 +38,7 @@ export default function ProjectsPage() {
       </div>
 
       {/* Search and Filter Bar */}
-      <div className="glass rounded-xl p-6 mb-12">
+      <div className="rounded-xl p-6 mb-12">
         <div className="flex flex-col lg:flex-row gap-4 items-center justify-between">
           <div className="relative flex-1 w-full lg:max-w-md">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
@@ -71,7 +71,7 @@ export default function ProjectsPage() {
             ))}
           </div>
         ) : (
-          <div className="glass rounded-xl p-12 text-center">
+          <div className="rounded-xl p-12 text-center">
             <div className="text-muted-foreground text-lg">
               No projects found matching your criteria.
             </div>
@@ -85,7 +85,7 @@ export default function ProjectsPage() {
 // Regular Project Card
 function ProjectCard({ project }: { project: (typeof projects)[0] }) {
   return (
-    <div className="group glass rounded-xl hover:bg-card/50 p-0 overflow-hidden transition-all duration-500 border-2 border-border hover:border-primary/20">
+    <div className="group rounded-xl hover:bg-card/50 p-0 overflow-hidden transition-all duration-500 border-2 border-border hover:border-primary/20">
       {/* Project Image */}
       <div className="relative overflow-hidden">
         <Image
