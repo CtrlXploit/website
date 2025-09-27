@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from 'react';
-import { Menu } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { MobileMenu } from './mobile-menu';
+import { useState } from "react";
+import { Menu } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { NavMenu } from "@/components/NavMenu";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -16,7 +16,7 @@ export function Header() {
           <span className="sr-only">Open menu</span>
         </Button>
       </header>
-      {isMenuOpen && <MobileMenu onClose={() => setIsMenuOpen(false)} />}
+      {isMenuOpen && <NavMenu onClose={() => setIsMenuOpen(false)} />}
     </>
   );
 }

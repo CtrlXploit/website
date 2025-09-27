@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect } from "react";
 
-interface MobileMenuProps {
+interface navProps {
   onClose: () => void;
 }
 
@@ -22,7 +22,7 @@ const secondaryNav = [
   { label: "Contact", href: "#" },
 ];
 
-export function MobileMenu({ onClose }: MobileMenuProps) {
+export function NavMenu({ onClose }: navProps) {
   useEffect(() => {
     const handleEsc = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -90,7 +90,7 @@ export function MobileMenu({ onClose }: MobileMenuProps) {
                     <Link
                       href={item.href}
                       onClick={onClose}
-                      className="inline-block relative mb-5 pb-2 text-[32px] sm:text-[40px] md:text-[52px] font-normal uppercase tracking-tighter leading-tight text-white opacity-90 transition-all duration-300 hover:opacity-100 group-hover:opacity-30 hover:!opacity-100 after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 after:bg-[var(--accent-color)] after:transition-all after:duration-300 hover:after:w-full"
+                      className="inline-block relative mb-5 pb-2 text-[32px] sm:text-[40px] md:text-[52px] font-normal uppercase tracking-tighter leading-tight text-white opacity-90 transition-all duration-300 group-hover:opacity-30 hover:!opacity-100 after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 after:bg-[var(--accent-color)] after:transition-all after:duration-300 hover:after:w-full"
                       style={{
                         fontFamily: "var(--font-main-left)",
                         fontFeatureSettings: '"liga", "ss02"',
@@ -108,12 +108,6 @@ export function MobileMenu({ onClose }: MobileMenuProps) {
               <h2 className="text-xs font-medium text-[var(--text-color-secondary)] tracking-[0.12em] uppercase relative after:content-[''] after:absolute after:bottom-[-1rem] after:left-0 after:w-[50px] after:h-[2px] after:bg-[var(--accent-color)] hover:after:w-[100px] after:transition-all after:duration-300">
                 More
               </h2>
-              <Link
-                href="#"
-                className="text-xs text-[var(--text-color-secondary)] tracking-[0.08em] font-medium uppercase transition-colors hover:text-[var(--accent-color)]"
-              >
-                See All &gt;
-              </Link>
             </header>
             <nav>
               <ul className="relative group">
@@ -125,7 +119,7 @@ export function MobileMenu({ onClose }: MobileMenuProps) {
                     <Link
                       href={topic.href}
                       onClick={onClose}
-                      className="block py-7 text-lg sm:text-xl md:text-2xl font-normal text-[var(--text-color-primary)] opacity-90 transition-all duration-300 hover:opacity-100 group-hover:opacity-30 hover:!opacity-100"
+                      className="block py-7 text-lg sm:text-xl md:text-2xl font-normal text-[var(--text-color-primary)] opacity-90 transition-all duration-300 group-hover:opacity-30 hover:!opacity-100"
                     >
                       {topic.label}
                     </Link>
