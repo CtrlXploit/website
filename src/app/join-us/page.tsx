@@ -1,5 +1,5 @@
 import GlitchText from "@/components/GlitchText";
-import { Calendar, Users, Link as LinkIcon, MessageCircle } from "lucide-react";
+import { Calendar, Users, MessageCircle } from "lucide-react";
 import Link from "next/link";
 
 export default function JoinUs() {

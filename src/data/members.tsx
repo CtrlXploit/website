@@ -1,5 +1,5 @@
 import { Users, Trophy, Crown, Zap } from "lucide-react";
-import React from "react"; // make sure this import is present
+import React from "react";
 
 export const levels = {
   root: [
@@ -12,17 +12,7 @@ export const levels = {
     "naughtyb0y.",
     "v1per",
   ],
-  moderator: [
-    "4darsh",
-    "e4stw1nd",
-    "s4ych33se",
-    "kannaya",
-    "izmelucifer17",
-    "Pr0meth3u5",
-    "n0tsane",
-    "cyb3rpunk_b4ddi3",
-    "Drago",
-  ],
+  moderator: ["4darsh", "e4stw1nd", "s4ych33se", "kannaya", "izmelucifer17"],
   "sys-admin": [
     "bond@james",
     "SPYD3R",
@@ -37,7 +27,6 @@ export const levels = {
     "_zafeiri",
     "Rajat",
     "V3n0m",
-    "penguin",
   ],
   club: [
     "iamgreedy",
@@ -59,7 +48,7 @@ export const levelDetails: Record<
   string,
   {
     name: string;
-    icon: React.ReactNode; // ✅ instead of JSX.Element
+    icon: React.ReactNode;
     color: string;
     borderColor: string;
   }

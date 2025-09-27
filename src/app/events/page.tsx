@@ -185,9 +185,7 @@ export default function EventsPage() {
       <section className="w-full">
         <div className="flex items-center gap-3 mb-8">
           <Calendar className="w-8 h-8 text-primary" />
-          <h2 className="text-3xl font-bold text-foreground">
-            Regular Events
-          </h2>
+          <h2 className="text-3xl font-bold text-foreground">Regular Events</h2>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -261,8 +259,8 @@ export default function EventsPage() {
             Ready to Join the Action?
           </h3>
           <p className="text-foreground/70 mb-6 max-w-2xl mx-auto">
-            Whether you're a beginner looking to learn or an expert ready to
-            compete, we have events designed for every skill level. Join
+            Whether you&apos;re a beginner looking to learn or an expert ready
+            to compete, we have events designed for every skill level. Join
             CyberLabs and be part of the cybersecurity community!
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
