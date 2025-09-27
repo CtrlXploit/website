@@ -82,51 +82,54 @@ export default function ProjectsPage() {
   );
 }
 
-// Regular Project Card
 function ProjectCard({ project }: { project: (typeof projects)[0] }) {
   return (
-    <div className="group rounded-xl hover:bg-card/50 p-0 overflow-hidden transition-all duration-500 border-2 border-border hover:border-primary/20">
-      {/* Project Image */}
-      <div className="relative overflow-hidden">
+    <a
+      href={project.liveDemo || project.githubUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="group block rounded-xl border border-white/10 bg-black/20 backdrop-blur-sm overflow-hidden transition-all duration-500 hover:border-primary/40 hover:bg-primary/5 hover:shadow-lg"
+    >
+      {/* Image: edge-to-edge */}
+      <div className="relative w-full h-48 overflow-hidden">
         <Image
           width={400}
           height={160}
           src={project.imageUrl}
           alt={project.name}
-          className="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-500"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
       </div>
 
       {/* Content */}
-      <div className="p-5">
-        <h3 className="text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
-          {project.name}
-        </h3>
-        <p className="text-muted-foreground text-sm leading-relaxed mb-3 line-clamp-2">
+      <div className="p-6">
+        <div className="flex items-start justify-between mb-3">
+          <h3 className="text-2xl font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
+            {project.name}
+          </h3>
+        </div>
+
+        <p className="text-md text-foreground/70 mb-4 leading-relaxed line-clamp-3">
           {project.shortDetail}
         </p>
 
-        {/* Technologies */}
-        <div className="flex flex-wrap gap-1 mb-4">
-          {project.technologies
-            .slice(0, 3)
-            .map((tech: string, index: number) => (
-              <span
-                key={index}
-                className="px-2 py-1 bg-primary/10 text-primary text-xs rounded border border-primary/20"
-              >
-                {tech}
-              </span>
-            ))}
+        <div className="flex flex-wrap gap-2 mb-4">
+          {project.technologies.slice(0, 3).map((tech, idx) => (
+            <span
+              key={idx}
+              className="px-2 py-1 text-xs font-medium rounded-full bg-primary/10 text-primary border border-primary/20"
+            >
+              {tech}
+            </span>
+          ))}
           {project.technologies.length > 3 && (
-            <span className="px-2 py-1 bg-card text-muted-foreground text-xs rounded border border-border">
+            <span className="px-2 py-1 text-xs font-medium rounded-full bg-white/10 text-foreground/70 border border-white/10">
               +{project.technologies.length - 3}
             </span>
           )}
         </div>
 
-        {/* Action Buttons */}
         <div className="flex gap-2">
           <a
             href={project.githubUrl}
@@ -150,6 +153,6 @@ function ProjectCard({ project }: { project: (typeof projects)[0] }) {
           )}
         </div>
       </div>
-    </div>
+    </a>
   );
 }
