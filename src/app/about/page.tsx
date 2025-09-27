@@ -139,7 +139,7 @@ export default function Members() {
                 </div>
                 <div className="ml-auto">
                   <span className="text-foreground/60 bg-white/5 px-3 py-1 rounded-full text-sm font-medium">
-                    {members.length} members
+                    {members.length}
                   </span>
                 </div>
               </div>
