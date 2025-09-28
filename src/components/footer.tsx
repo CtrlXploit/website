@@ -11,6 +11,12 @@ export function Footer() {
         </p>
         <div className="flex gap-6">
           <Link
+            href="/announcements"
+            className="text-muted-foreground hover:text-primary transition-colors"
+          >
+            Announcements
+          </Link>
+          <Link
             href="https://github.com/CyberLabs-Infosec/"
             className="text-muted-foreground hover:text-primary transition-colors"
           >
@@ -19,9 +25,9 @@ export function Footer() {
           </Link>
           <Link
             href="https://discord.gg/sMtk8ePEJB"
-            className="hover:opacity-80 transition-opacity"
+            className="text-muted-foreground"
           >
-            <LiaDiscord className="h-5 w-5 text-muted-foreground" />
+            <LiaDiscord className="h-5 w-5 text-muted-foreground hover:text-primary transition-colors" />
             <span className="sr-only">Discord</span>
           </Link>
         </div>
