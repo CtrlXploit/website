@@ -25,7 +25,7 @@
     --ring: 235 85% 64%;
     --radius: 0.375rem;
 
-    --bg-color: #000000;
+    --bg-color: #1b1b1d;
     --text-color-primary: #ffffff;
     --text-color-secondary: #b9bbbe;
     --accent-color: #5865f2;
@@ -93,7 +93,7 @@
 
   /* Full page grid overlay */
   html {
-    background: #000000;
+    background: var(--bg-color);
     background-image:
       linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
       linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);

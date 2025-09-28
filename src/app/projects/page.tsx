@@ -39,7 +39,7 @@ export default function ProjectsPage() {
 
       {/* Search and Filter Bar */}
       <div className="rounded-xl p-6 mb-12">
-        <div className="flex flex-col lg:flex-row gap-4 items-center justify-between">
+        <div className="flex flex-col lg:flex-row gap-4 items-center justify-center">
           <div className="relative flex-1 w-full lg:max-w-md">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
             <input
