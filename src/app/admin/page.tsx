@@ -47,7 +47,7 @@ export default function Admin() {
               </Link>
 
               <Link
-                href="/admin/blogs"
+                href="/admin/blog"
                 className="flex flex-col items-center gap-3 bg-primary/10 text-primary p-6 rounded-xl hover:bg-primary/20 transition-colors group"
               >
                 <FileText className="w-8 h-8 group-hover:scale-110 transition-transform" />

@@ -33,6 +33,7 @@ export default function AdminBlogsPage() {
           .eq("id", user.id)
           .single();
         setUsername(profile?.username || null);
+        setAuthor(profile?.username || "");
       }
     };
     getUsername();
@@ -221,23 +222,6 @@ export default function AdminBlogsPage() {
               {type === "markdown"
                 ? "URL to the markdown file (e.g., GitHub raw link, CDN, etc.)"
                 : "URL to the PDF file"}
-            </p>
-          </div>
-
-          <div>
-            <label htmlFor="author" className="block text-sm font-medium mb-2">
-              Author
-            </label>
-            <input
-              id="author"
-              type="text"
-              value={author}
-              onChange={(e) => setAuthor(e.target.value)}
-              placeholder="Author name (optional)"
-              className="w-full px-3 py-2 border border-input bg-background rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-            />
-            <p className="text-sm text-foreground/60 mt-1">
-              Leave empty to use your username (@{username})
             </p>
           </div>
 

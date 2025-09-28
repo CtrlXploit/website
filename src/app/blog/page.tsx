@@ -99,8 +99,8 @@ export default async function BlogPage() {
           Blog & Writeups
         </GlitchText>
         <p className="mt-6 text-xl text-foreground/80 max-w-3xl mx-auto leading-relaxed">
-          Explore our latest security research, CTF writeups, and technical
-          articles from our community members.
+          Explore our CTF writeups, and technical
+          articles from our club members.
         </p>
       </header>
 
