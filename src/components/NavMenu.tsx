@@ -47,7 +47,8 @@ export function NavMenu({ onClose }: navProps) {
           "--text-color-primary": "hsl(var(--foreground))",
           "--text-color-secondary": "hsl(var(--muted-foreground))",
           "--accent-color": "hsl(var(--primary))",
-          "--border-color": "hsl(var(--border))",
+          // "--border-color": "hsl(var(--border))",
+          "--border-color": "hsl(var(--muted-foreground) / 0.5)",
           "--font-main-right":
             '"Hubot Sans", "Mona Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif',
           "--font-main-left":
