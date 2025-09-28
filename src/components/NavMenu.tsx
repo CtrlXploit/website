@@ -11,7 +11,7 @@ const mainNav = [
   { label: "About", href: "/about" },
   { label: <>Join&nbsp;&nbsp;&nbsp;Us</>, href: "/join-us" },
   { label: "Events", href: "/events" },
-  { label: "Achievements", href: "#" },
+  { label: "Announcements", href: "/announcements" },
 ];
 
 const secondaryNav = [
@@ -19,7 +19,7 @@ const secondaryNav = [
   { label: "Wargames", href: "#" },
   { label: "Blog", href: "#" },
   { label: "Resources", href: "/resources" },
-  { label: "Contact", href: "#" },
+  { label: "Achievements", href: "#" },
 ];
 
 export function NavMenu({ onClose }: navProps) {
