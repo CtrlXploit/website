@@ -16,10 +16,10 @@ const mainNav = [
 
 const secondaryNav = [
   { label: "Projects", href: "/projects" },
-  { label: "Wargames", href: "#" },
-  { label: "Blog", href: "#" },
+  { label: "Wargames", href: "/wargames" },
+  { label: "Blog", href: "/blog" },
   { label: "Resources", href: "/resources" },
-  { label: "Achievements", href: "#" },
+  { label: "Achievements", href: "/achievements" },
 ];
 
 export function NavMenu({ onClose }: navProps) {
