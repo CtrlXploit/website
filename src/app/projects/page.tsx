@@ -1,12 +1,11 @@
-import { createClient } from "@/utils/supabase/server";
+"use client";
+
+import { useState, useEffect } from "react";
+import { createClient } from "@/utils/supabase/client";
 import GlitchText from "@/components/GlitchText";
 import { ArrowUpRightIcon, CodeBracketIcon } from "@heroicons/react/24/outline";
-import Image from "next/image";
+// import Image from "next/image";
 
-// Cache this page and re-fetch data at most once every hour
-export const revalidate = 3600;
-
-// Define the Project type to match your Supabase table
 type Project = {
   id: number;
   name: string;
@@ -17,26 +16,46 @@ type Project = {
   technologies: string[];
 };
 
-export default async function Projects() {
-  const supabase = await createClient();
+export default function Projects() {
+  const supabase = createClient();
+  const [projects, setProjects] = useState<Project[] | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-  const { data: projects, error } = await supabase
-    .from("projects")
-    .select("*")
-    .order("id", { ascending: true });
+  // Fetch projects on mount
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("projects")
+          .select("*")
+          .order("id", { ascending: true });
+        if (error) throw error;
+        setProjects(data || []);
+      } catch (err: any) {
+        console.error("Error fetching projects:", err);
+        setError("Could not fetch projects. Please try again later.");
+      }
+    };
+    fetchProjects();
+  }, [supabase]);
 
   if (error) {
-    console.error("Error fetching projects:", error);
     return (
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center flex flex-col items-center min-h-screen">
-        <p className="text-red-500">
-          Could not fetch projects. Please try again later.
-        </p>
+        <p className="text-red-500">{error}</p>
       </div>
     );
   }
 
-  if (!projects || projects.length === 0) {
+  if (!projects) {
+    return (
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center flex flex-col items-center min-h-screen">
+        <p>Loading projects...</p>
+      </div>
+    );
+  }
+
+  if (projects.length === 0) {
     return (
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center flex flex-col items-center min-h-screen">
         <GlitchText
@@ -79,10 +98,9 @@ export default async function Projects() {
             >
               {/* Project Image */}
               <div className="relative h-48 overflow-hidden">
-                <Image
+                <img
                   src={project.image_url}
                   alt={project.name}
-                  fill
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
