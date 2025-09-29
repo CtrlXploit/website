@@ -266,15 +266,9 @@ export default function EventsPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href="/join-us"
-              className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:scale-105"
-            >
-              Join Our Community
-            </a>
-            <a
-              href="/contact"
               className="bg-card hover:bg-card/70 text-foreground border border-border hover:border-primary/30 px-6 py-3 rounded-lg font-medium transition-all duration-300"
             >
-              Contact Us
+              Join Us!
             </a>
           </div>
         </div>
