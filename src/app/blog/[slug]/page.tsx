@@ -31,8 +31,6 @@ const formatDate = (dateString: string) => {
     year: "numeric",
     month: "long",
     day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
   }).format(date);
 };
 
@@ -143,11 +141,11 @@ export default async function BlogDetailPage({
       <main className="max-w-4xl mx-auto">
         <div className="rounded-xl border border-white/10 bg-black/5 backdrop-blur-sm overflow-hidden">
           {blog.type === "markdown" ? (
-            <div className="p-8">
+            <div className="p-2 sm:p-6 lg:p-8">
               <MarkdownRenderer contentUrl={blog.content_url} />
             </div>
           ) : (
-            <div className="p-8 text-center">
+            <div className="p-4 sm:p-6 lg:p-8 text-center">
               <div className="mb-8">
                 <h2 className="text-2xl font-bold mb-4">PDF Document</h2>
                 <p className="text-foreground/70 mb-6">
@@ -159,7 +157,6 @@ export default async function BlogDetailPage({
               {/* PDF Viewer */}
               <div className="mb-8 rounded-lg overflow-hidden border border-white/20">
                 <div className="relative w-full" style={{ paddingTop: "140%" }}>
-                  {/* Aspect ratio box */}
                   <iframe
                     src={`https://docs.google.com/viewer?url=${encodeURIComponent(
                       blog.content_url

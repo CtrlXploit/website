@@ -32,8 +32,6 @@ const formatDate = (dateString: string) => {
     year: "numeric",
     month: "long",
     day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
   }).format(date);
 };
 
@@ -99,8 +97,8 @@ export default async function BlogPage() {
           Blog & Writeups
         </GlitchText>
         <p className="mt-6 text-xl text-foreground/80 max-w-3xl mx-auto leading-relaxed">
-          Explore our CTF writeups, and technical
-          articles from our club members.
+          Explore our CTF writeups, and technical articles from our club
+          members.
         </p>
       </header>
 
