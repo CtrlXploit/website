@@ -128,7 +128,7 @@ export default async function AboutPage() {
             Our Team
           </GlitchText>
           <p className="text-lg text-foreground/70 max-w-2xl mx-auto">
-            Meet the talented individuals in out Club.
+            Meet the talented individuals in our Club.
           </p>
         </div>
       </div>
