@@ -9,7 +9,6 @@ export default function AdminBlogsPage() {
   const [description, setDescription] = useState("");
   const [type, setType] = useState<"markdown" | "pdf">("markdown");
   const [contentUrl, setContentUrl] = useState("");
-  const [author, setAuthor] = useState("");
   const [tags, setTags] = useState("");
   const [published, setPublished] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -18,27 +17,24 @@ export default function AdminBlogsPage() {
     text: string;
   } | null>(null);
   const [username, setUsername] = useState<string | null>(null);
-  const [authorId, setAuthorId] = useState<string | null>(null);
 
   const supabase = createClient();
 
   useEffect(() => {
-    const getUsername = async () => {
+    const fetchUser = async () => {
       const {
         data: { user },
       } = await supabase.auth.getUser();
       if (user) {
-        setAuthorId(user.id);
         const { data: profile } = await supabase
           .from("profiles")
           .select("username")
           .eq("id", user.id)
           .single();
         setUsername(profile?.username || null);
-        setAuthor(profile?.username || "");
       }
     };
-    getUsername();
+    fetchUser();
   }, [supabase]);
 
   const generateSlug = (title: string) => {
@@ -76,8 +72,8 @@ export default function AdminBlogsPage() {
       return;
     }
 
-    if (!username || !authorId) {
-      setMessage({ type: "error", text: "User authentication error" });
+    if (!username) {
+      setMessage({ type: "error", text: "User not loaded yet. Please wait a moment and try again." });
       return;
     }
 
@@ -99,7 +95,7 @@ export default function AdminBlogsPage() {
           description: description.trim(),
           type: type,
           content_url: contentUrl.trim(),
-          author: authorId,
+          author: username,
           tags: tagsArray.length > 0 ? tagsArray : null,
           slug: slug,
           published: published,
@@ -119,7 +115,6 @@ export default function AdminBlogsPage() {
       setDescription("");
       setType("markdown");
       setContentUrl("");
-      setAuthor("");
       setTags("");
       setPublished(true);
     } catch (error) {
