@@ -18,6 +18,7 @@ export default function AdminBlogsPage() {
     text: string;
   } | null>(null);
   const [username, setUsername] = useState<string | null>(null);
+  const [authorId, setAuthorId] = useState<string | null>(null);
 
   const supabase = createClient();
 
@@ -27,6 +28,7 @@ export default function AdminBlogsPage() {
         data: { user },
       } = await supabase.auth.getUser();
       if (user) {
+        setAuthorId(user.id);
         const { data: profile } = await supabase
           .from("profiles")
           .select("username")
@@ -74,7 +76,7 @@ export default function AdminBlogsPage() {
       return;
     }
 
-    if (!username) {
+    if (!username || !authorId) {
       setMessage({ type: "error", text: "User authentication error" });
       return;
     }
@@ -97,7 +99,7 @@ export default function AdminBlogsPage() {
           description: description.trim(),
           type: type,
           content_url: contentUrl.trim(),
-          author: author.trim() || null,
+          author: authorId,
           tags: tagsArray.length > 0 ? tagsArray : null,
           slug: slug,
           published: published,
