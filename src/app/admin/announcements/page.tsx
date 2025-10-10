@@ -4,11 +4,14 @@
 import { useState, useEffect } from "react";
 import GlitchText from "@/components/GlitchText";
 import { createClient } from "@/utils/supabase/client";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 export default function AnnouncementsPage() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [imageUrl, setImageUrl] = useState("");
+  const [scheduledAt, setScheduledAt] = useState<Date | null>(new Date());
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState<{
     type: "success" | "error";
@@ -43,6 +46,11 @@ export default function AnnouncementsPage() {
       return;
     }
 
+    if (!scheduledAt) {
+      setMessage({ type: "error", text: "A scheduled date and time is required" });
+      return;
+    }
+
     if (!username) {
       setMessage({ type: "error", text: "User authentication error" });
       return;
@@ -58,6 +66,7 @@ export default function AnnouncementsPage() {
           description: description.trim(),
           image_url: imageUrl.trim() || null,
           created_by: username,
+          scheduled_at: scheduledAt.toISOString(),
         },
       ]);
 
@@ -70,6 +79,7 @@ export default function AnnouncementsPage() {
       setTitle("");
       setDescription("");
       setImageUrl("");
+      setScheduledAt(new Date());
     } catch (error) {
       setMessage({
         type: "error",
@@ -94,8 +104,7 @@ export default function AnnouncementsPage() {
         Announcements
       </GlitchText>
       <p className="text-foreground/70 text-lg mb-12 text-center max-w-2xl">
-        Post announcements for the club. Share important updates and information
-        with members.
+        Post announcements and schedule events for the club.
       </p>
 
       <div className="w-full max-w-2xl bg-card border rounded-lg p-6">
@@ -137,6 +146,24 @@ export default function AnnouncementsPage() {
 
           <div>
             <label
+              htmlFor="scheduledAt"
+              className="block text-sm font-medium mb-2"
+            >
+              Schedule Date & Time *
+            </label>
+            <DatePicker
+              id="scheduledAt"
+              selected={scheduledAt}
+              onChange={(date) => setScheduledAt(date)}
+              showTimeSelect
+              dateFormat="MMMM d, yyyy h:mm aa"
+              wrapperClassName="w-full"
+              className="w-full px-3 py-2 border border-input bg-background rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+            />
+          </div>
+
+          <div>
+            <label
               htmlFor="imageUrl"
               className="block text-sm font-medium mb-2"
             >
@@ -173,6 +200,73 @@ export default function AnnouncementsPage() {
           </button>
         </form>
       </div>
+
+      <style jsx global>{`
+        :root {
+          --dp-bg-color: #0d1117;
+          --dp-border-color: #30363d;
+          --dp-text-color: #c9d1d9;
+          --dp-accent-color: #ef4444; 
+          --dp-hover-bg-color: #161b22;
+        }
+
+        .react-datepicker-popper {
+          z-index: 10;
+        }
+
+        .react-datepicker {
+          font-family: inherit;
+          background-color: var(--dp-bg-color);
+          border: 1px solid var(--dp-border-color);
+          border-radius: 0.5rem;
+        }
+
+        .react-datepicker__triangle::before,
+        .react-datepicker__triangle::after {
+          border-bottom-color: var(--dp-bg-color) !important;
+        }
+        
+        .react-datepicker__header, 
+        .react-datepicker__time-container, 
+        .react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box {
+          background-color: var(--dp-bg-color);
+          border-color: var(--dp-border-color);
+        }
+
+        .react-datepicker__current-month,
+        .react-datepicker-time__header,
+        .react-datepicker-day-name,
+        .react-datepicker__day,
+        .react-datepicker__time-list-item {
+          color: var(--dp-text-color);
+        }
+
+        .react-datepicker__navigation-icon::before {
+            border-color: var(--dp-text-color);
+        }
+
+        .react-datepicker__day, 
+        .react-datepicker__time-list-item {
+          transition: background-color 0.2s ease-in-out;
+        }
+
+        .react-datepicker__day:hover, 
+        .react-datepicker__time-list-item:hover {
+          background-color: var(--dp-hover-bg-color) !important;
+        }
+        
+        .react-datepicker__day--disabled {
+            opacity: 0.4;
+        }
+
+        .react-datepicker__day--selected,
+        .react-datepicker__day--keyboard-selected,
+        .react-datepicker__time-list-item--selected {
+          background-color: var(--dp-accent-color) !important;
+          color: white !important;
+          font-weight: bold;
+        }
+      `}</style>
     </div>
   );
 }
