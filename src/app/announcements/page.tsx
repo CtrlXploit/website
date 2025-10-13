@@ -1,6 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
 import GlitchText from "@/components/GlitchText";
 import { CalendarIcon, UserIcon } from "@heroicons/react/24/outline";
+import { cookies } from 'next/headers';
 
 export const revalidate = 0;
 
@@ -26,6 +27,8 @@ const formatDate = (dateString: string) => {
 };
 
 export default async function Announcements() {
+  cookies();
+
   const supabase = await createClient();
 
   const { data: announcements, error } = await supabase
@@ -41,7 +44,7 @@ export default async function Announcements() {
       scheduled_at
       `
     )
-    .lte('scheduled_at', new Date().toISOString())
+    .lte('scheduled_at', 'now()')
     .order("scheduled_at", { ascending: false });
 
   if (error) {
