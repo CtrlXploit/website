@@ -1,14 +1,35 @@
-// app/admin/announcements/page.tsx
 "use client";
 
 import { useState, useEffect } from "react";
 import GlitchText from "@/components/GlitchText";
 import { createClient } from "@/utils/supabase/client";
+import { format } from "date-fns";
+import { Calendar as CalendarIcon } from "lucide-react";
+
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+
+const getInitialRoundedDate = () => {
+  const startDate = new Date();
+  const minutes = startDate.getMinutes();
+  const roundedMinutes = Math.round(minutes / 15) * 15;
+  startDate.setMinutes(roundedMinutes);
+  startDate.setSeconds(0);
+  startDate.setMilliseconds(0);
+  return startDate;
+};
 
 export default function AnnouncementsPage() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [imageUrl, setImageUrl] = useState("");
+  const [scheduledAt, setScheduledAt] = useState<Date | undefined>(getInitialRoundedDate());
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState<{
     type: "success" | "error";
@@ -34,6 +55,17 @@ export default function AnnouncementsPage() {
     };
     getUsername();
   }, [supabase]);
+  
+  const handleTimeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    const newDate = scheduledAt ? new Date(scheduledAt) : new Date();
+    if (name === "hour") {
+      newDate.setHours(parseInt(value));
+    } else if (name === "minute") {
+      newDate.setMinutes(parseInt(value));
+    }
+    setScheduledAt(newDate);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,7 +74,10 @@ export default function AnnouncementsPage() {
       setMessage({ type: "error", text: "Title and description are required" });
       return;
     }
-
+    if (!scheduledAt) {
+      setMessage({ type: "error", text: "A scheduled date and time is required" });
+      return;
+    }
     if (!username) {
       setMessage({ type: "error", text: "User authentication error" });
       return;
@@ -58,6 +93,7 @@ export default function AnnouncementsPage() {
           description: description.trim(),
           image_url: imageUrl.trim() || null,
           created_by: username,
+          scheduled_at: scheduledAt.toISOString(),
         },
       ]);
 
@@ -70,6 +106,7 @@ export default function AnnouncementsPage() {
       setTitle("");
       setDescription("");
       setImageUrl("");
+      setScheduledAt(getInitialRoundedDate());
     } catch (error) {
       setMessage({
         type: "error",
@@ -94,8 +131,7 @@ export default function AnnouncementsPage() {
         Announcements
       </GlitchText>
       <p className="text-foreground/70 text-lg mb-12 text-center max-w-2xl">
-        Post announcements for the club. Share important updates and information
-        with members.
+        Post announcements and schedule events for the club.
       </p>
 
       <div className="w-full max-w-2xl bg-card border rounded-lg p-6">
@@ -116,7 +152,6 @@ export default function AnnouncementsPage() {
               className="w-full px-3 py-2 border border-input bg-background rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
             />
           </div>
-
           <div>
             <label
               htmlFor="description"
@@ -133,6 +168,53 @@ export default function AnnouncementsPage() {
               rows={6}
               className="w-full px-3 py-2 border border-input bg-background rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-primary"
             />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-2">
+              Schedule Date & Time *
+            </label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant={"outline"}
+                  className={cn(
+                    "w-full justify-start text-left font-normal",
+                    !scheduledAt && "text-muted-foreground"
+                  )}
+                >
+                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  {scheduledAt ? format(scheduledAt, 'PPP p') : <span>Pick a date</span>}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0 space-y-4">
+                <Calendar
+                  mode="single"
+                  selected={scheduledAt}
+                  onSelect={setScheduledAt}
+                  initialFocus
+                />
+                <div className="flex gap-2 p-4 pt-0">
+                  <select
+                    name="hour"
+                    value={scheduledAt?.getHours() || 0}
+                    onChange={handleTimeChange}
+                    className="w-full px-3 py-2 border border-input bg-background rounded-md"
+                  >
+                    {[...Array(24).keys()].map(h => <option key={h} value={h}>{h.toString().padStart(2, '0')}</option>)}
+                  </select>
+                  <span className="flex items-center">:</span>
+                  <select
+                    name="minute"
+                    value={scheduledAt?.getMinutes() || 0}
+                    onChange={handleTimeChange}
+                    className="w-full px-3 py-2 border border-input bg-background rounded-md"
+                  >
+                    {[0, 15, 30, 45].map(m => <option key={m} value={m}>{m.toString().padStart(2, '0')}</option>)}
+                  </select>
+                </div>
+              </PopoverContent>
+            </Popover>
           </div>
 
           <div>
