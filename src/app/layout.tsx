@@ -4,6 +4,8 @@ import { Toaster } from "@/components/ui/toaster";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { Fira_Code } from "next/font/google";
+import { SpeedInsights } from '@vercel/speed-insights/next';
+import { Analytics } from '@vercel/analytics/next';
 
 const firaCode = Fira_Code({
   subsets: ["latin"],
@@ -44,6 +46,8 @@ export default function RootLayout({
         </main>
         <Footer />
         <Toaster />
+	<Analytics />
+	<SpeedInsights />
       </body>
     </html>
   );
