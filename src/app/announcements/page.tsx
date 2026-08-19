@@ -1,7 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
-import GlitchText from "@/components/GlitchText";
-import { CalendarIcon, UserIcon } from "@heroicons/react/24/outline";
-import { cookies } from 'next/headers';
+import { TextReveal } from "@/components/TextReveal";
+import { SectionReveal } from "@/components/SectionReveal";
+import { cookies } from "next/headers";
 
 export const revalidate = 0;
 
@@ -26,6 +26,15 @@ const formatDate = (dateString: string) => {
   }).format(date);
 };
 
+const formatDateShort = (dateString: string) => {
+  const date = new Date(dateString);
+  return new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  }).format(date);
+};
+
 export default async function Announcements() {
   cookies();
 
@@ -44,108 +53,99 @@ export default async function Announcements() {
       scheduled_at
       `
     )
-    .lte('scheduled_at', 'now()')
+    .lte("scheduled_at", "now()")
     .order("scheduled_at", { ascending: false });
 
   if (error) {
     console.error("Error fetching announcements:", error);
     return (
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center flex flex-col items-center min-h-screen">
-        <p className="text-red-500">
+      <div className="w-full max-w-7xl mx-auto px-6 md:px-10 py-32 text-center min-h-screen">
+        <p className="text-destructive font-mono text-sm">
           Could not fetch announcements. Please try again later.
         </p>
       </div>
     );
   }
 
-  if (!announcements || announcements.length === 0) {
-    return (
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center flex flex-col items-center min-h-screen">
-        <GlitchText
-          speed={1}
-          enableShadows={true}
-          enableOnHover={true}
-          className="whitespace-nowrap text-6xl md:text-7xl lg:text-8xl"
-        >
-          Announcements
-        </GlitchText>
-        <p className="text-foreground/70 mt-8">No announcements found.</p>
-      </div>
-    );
-  }
-
   return (
-    <div className="w-full max-w-7xl mx-auto my-20 flex flex-col items-center">
-      <header className="text-center w-full mb-20">
-        <GlitchText
-          speed={1}
-          enableShadows={true}
-          enableOnHover={true}
-          className="whitespace-nowrap text-6xl md:text-7xl lg:text-8xl"
-        >
+    <div className="w-full flex flex-col pt-24">
+      {/* Hero */}
+      <section className="max-w-7xl mx-auto px-6 md:px-10 py-16 md:py-24">
+        <TextReveal as="p" className="eyebrow mb-4">
           Announcements
-        </GlitchText>
-        <p className="mt-6 text-xl text-foreground/80 max-w-3xl mx-auto leading-relaxed">
-          Stay updated with the latest news, events, and important information
-          from our community.
-        </p>
-      </header>
+        </TextReveal>
+        <TextReveal as="h1" delay={0.1}>
+          <span className="font-display text-5xl md:text-6xl lg:text-7xl italic text-foreground leading-[1.05]">
+            Latest from the&nbsp;team.
+          </span>
+        </TextReveal>
+        <TextReveal
+          as="p"
+          delay={0.3}
+          className="mt-6 text-lg text-muted-foreground max-w-2xl leading-relaxed"
+        >
+          News, events, and updates from the Infosec division.
+        </TextReveal>
+      </section>
 
-      <div className="w-full max-w-4xl mx-auto">
-        <div className="space-y-8">
-          {announcements.map((announcement) => (
-            <article
-              key={announcement.id}
-              className="group relative block rounded-xl border border-white/10 bg-black/10 backdrop-blur-sm transition-all duration-500 hover:border-primary/40 hover:bg-primary/5 hover:shadow-lg overflow-hidden"
-            >
-              {announcement.image_url && (
-                <div className="relative h-48 overflow-hidden">
-                  <img
-                    src={announcement.image_url}
-                    alt={announcement.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                </div>
-              )}
+      {/* Announcements List */}
+      <section className="border-t border-border">
+        <div className="max-w-4xl mx-auto px-6 md:px-10 py-16 md:py-24">
+          {!announcements || announcements.length === 0 ? (
+            <p className="text-muted-foreground font-mono text-sm">
+              No announcements yet.
+            </p>
+          ) : (
+            <div>
+              {announcements.map((announcement, i) => (
+                <SectionReveal key={announcement.id} delay={i * 0.05}>
+                  <article className="group border-b border-border py-8 first:pt-0 last:border-b-0">
+                    {/* Image */}
+                    {announcement.image_url && (
+                      <div className="relative h-48 md:h-64 overflow-hidden mb-5 bg-[hsl(var(--surface))]">
+                        <img
+                          src={announcement.image_url}
+                          alt={announcement.title}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    )}
 
-              <div className="p-6">
-                <div className="flex items-start justify-between mb-4">
-                  <h3 className="text-2xl font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
-                    {announcement.title}
-                  </h3>
-                  {announcement.scheduled_at && (
-                    <span className="px-3 py-1 text-xs font-medium rounded-full bg-primary/10 text-primary whitespace-nowrap ml-4">
-                      {new Date(announcement.scheduled_at).toLocaleDateString()}
+                    {/* Date */}
+                    <span className="font-mono text-xs text-muted-foreground">
+                      {formatDateShort(
+                        announcement.scheduled_at || announcement.created_at
+                      )}
                     </span>
-                  )}
-                </div>
 
-                {announcement.description && (
-                  <p className="text-md text-foreground/70 mb-6 leading-relaxed">
-                    {announcement.description}
-                  </p>
-                )}
+                    {/* Title */}
+                    <h2 className="mt-2 font-sans text-xl md:text-2xl font-medium text-foreground leading-snug">
+                      {announcement.title}
+                    </h2>
 
-                <div className="flex flex-wrap items-center gap-4 text-sm text-foreground/60">
-                  <div className="flex items-center">
-                    <CalendarIcon className="w-4 h-4 mr-1" />
-                    {formatDate(announcement.scheduled_at || announcement.created_at)}
-                  </div>
-                  {announcement.created_by && (
-                    <div className="flex items-center">
-                      <UserIcon className="w-4 h-4 mr-1" />
-                      <span className="text-primary">
-                        @{announcement.created_by}
+                    {/* Description */}
+                    {announcement.description && (
+                      <p className="mt-3 text-sm text-muted-foreground leading-relaxed max-w-2xl">
+                        {announcement.description}
+                      </p>
+                    )}
+
+                    {/* Author */}
+                    {announcement.created_by && (
+                      <span className="mt-3 inline-block font-mono text-xs text-foreground/50">
+                        by{" "}
+                        <span className="text-primary">
+                          @{announcement.created_by}
+                        </span>
                       </span>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </article>
-          ))}
+                    )}
+                  </article>
+                </SectionReveal>
+              ))}
+            </div>
+          )}
         </div>
-      </div>
+      </section>
     </div>
   );
 }

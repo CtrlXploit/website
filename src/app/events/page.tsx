@@ -1,16 +1,80 @@
 "use client";
+
+import { TextReveal } from "@/components/TextReveal";
+import { SectionReveal } from "@/components/SectionReveal";
+import { useState } from "react";
 import {
   Calendar,
   Trophy,
-  DollarSign,
   Users,
   Clock,
   Target,
   Zap,
-  Medal,
   Gamepad2,
+  ChevronDown,
 } from "lucide-react";
-import GlitchText from "@/components/GlitchText";
+import Link from "next/link";
+
+interface EventDetail {
+  name: string;
+  type: string;
+  description: string;
+  target?: string;
+  frequency?: string;
+  duration?: string;
+  format?: string;
+  icon: React.ReactNode;
+}
+
+function ExpandableEvent({ event, index }: { event: EventDetail; index: number }) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div className="border-b border-border last:border-b-0">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full grid grid-cols-[1fr_auto_auto_auto_32px] gap-4 items-center px-5 py-4 text-left hover:bg-[hsl(var(--surface))] transition-colors duration-150 group"
+      >
+        <span className="font-sans text-sm font-medium text-foreground group-hover:text-primary transition-colors">
+          {event.name}
+        </span>
+        <span className="font-mono text-xs text-muted-foreground hidden md:block w-40 text-right">
+          {event.type}
+        </span>
+        <span className="font-mono text-xs text-muted-foreground hidden md:block w-28 text-right">
+          {event.target || "—"}
+        </span>
+        <span className="font-mono text-xs text-muted-foreground hidden md:block w-28 text-right">
+          {event.frequency || event.duration || event.format || "—"}
+        </span>
+        <ChevronDown
+          className={`w-4 h-4 text-muted-foreground transition-transform duration-200 ${
+            isOpen ? "rotate-180" : ""
+          }`}
+        />
+      </button>
+      {isOpen && (
+        <div className="px-5 pb-5 pt-1">
+          <p className="text-sm text-muted-foreground leading-relaxed max-w-2xl">
+            {event.description}
+          </p>
+          <div className="flex flex-wrap gap-4 mt-3 md:hidden">
+            {event.target && (
+              <span className="flex items-center gap-1.5 font-mono text-xs text-muted-foreground">
+                <Users className="w-3 h-3" /> {event.target}
+              </span>
+            )}
+            {(event.frequency || event.duration) && (
+              <span className="flex items-center gap-1.5 font-mono text-xs text-muted-foreground">
+                <Clock className="w-3 h-3" /> {event.frequency || event.duration}
+              </span>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function EventsPage() {
   const mainEvent = {
@@ -19,7 +83,7 @@ export default function EventsPage() {
     organizer: "CyberLabs, IIT (ISM) Dhanbad",
     description:
       "Pearl CTF is our flagship global cybersecurity competition, featuring challenges from various categories including Web exploitation, Pwn, Forensics, Reverse Engineering, Cryptography, and more.",
-    prizePool: "1000",
+    prizePool: "$1000",
     website: "https://pearlctf.in/",
     status: "Annual Global Event",
     categories: [
@@ -30,36 +94,26 @@ export default function EventsPage() {
       "Cryptography",
       "Misc",
     ],
-    icon: <Trophy className="w-8 h-8" />,
-    color: "text-emerald-400",
-    borderColor: "border-emerald-400/30 hover:border-emerald-400/60",
-    bgColor: "bg-emerald-400/5",
   };
 
-  const otherEvents = [
+  const otherEvents: EventDetail[] = [
     {
       name: "COTD",
       type: "Daily Challenge",
       description:
-        "Challenge of the Day - A daily cybersecurity challenge event specifically designed for first-year students to build their skills progressively.",
-      target: "First Year Students",
+        "Challenge of the Day — A daily cybersecurity challenge event specifically designed for first-year students to build their skills progressively.",
+      target: "First Years",
       frequency: "Daily",
-      icon: <Calendar className="w-6 h-6" />,
-      color: "text-purple-400",
-      borderColor: "border-purple-400/30 hover:border-purple-400/60",
-      bgColor: "bg-purple-400/5",
+      icon: <Calendar className="w-4 h-4" />,
     },
     {
       name: "Unixit",
       type: "Wargame",
       description:
         "An interactive wargaming platform designed to introduce first-year students to practical cybersecurity scenarios and hands-on learning.",
-      target: "First Year Students",
-      format: "Interactive Learning",
-      icon: <Gamepad2 className="w-6 h-6" />,
-      color: "text-rose-400",
-      borderColor: "border-rose-400/30 hover:border-rose-400/60",
-      bgColor: "bg-rose-400/5",
+      target: "First Years",
+      format: "Interactive",
+      icon: <Gamepad2 className="w-4 h-4" />,
     },
     {
       name: "Ascension Arcade",
@@ -67,210 +121,144 @@ export default function EventsPage() {
       description:
         "An advanced wargaming platform featuring progressive challenges that test and enhance cybersecurity skills across multiple difficulty levels.",
       target: "All Students",
-      format: "Progressive Challenges",
-      icon: <Target className="w-6 h-6" />,
-      color: "text-amber-400",
-      borderColor: "border-amber-400/30 hover:border-amber-400/60",
-      bgColor: "bg-amber-400/5",
+      format: "Progressive",
+      icon: <Target className="w-4 h-4" />,
     },
     {
       name: "WOC",
       type: "Hackathon & Recruitment",
       description:
-        "Winter of Code - A month-long intensive hackathon and recruitment contest designed specifically for first-year students to showcase their skills and join our community.",
-      target: "First Year Students",
+        "Winter of Code — A month-long intensive hackathon and recruitment contest designed specifically for first-year students to showcase their skills and join our community.",
+      target: "First Years",
       duration: "1 Month",
-      icon: <Zap className="w-6 h-6" />,
-      color: "text-blue-400",
-      borderColor: "border-blue-400/30 hover:border-blue-400/60",
-      bgColor: "bg-blue-400/5",
+      icon: <Zap className="w-4 h-4" />,
     },
   ];
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center flex flex-col items-center min-h-screen">
-      {/* Header */}
-      <div className="flex flex-col justify-center items-center w-full relative mb-16">
-        <div className="relative z-10">
-          <GlitchText
-            speed={1}
-            enableShadows={true}
-            enableOnHover={true}
-            className="whitespace-nowrap mb-6"
-          >
-            Our Events
-          </GlitchText>
-          <p className="text-lg text-foreground/70 max-w-3xl mx-auto leading-relaxed">
-            Discover our cybersecurity events, competitions, and learning
-            platforms designed to challenge, educate, and build the next
-            generation of security professionals.
-          </p>
-        </div>
-      </div>
-
-      {/* Main Event - Pearl CTF */}
-      <section className="w-full mb-16">
-        <div className="flex items-center gap-3 mb-8">
-          <Medal className="w-8 h-8 text-emerald-400" />
-          <h2 className="text-3xl font-bold text-foreground">Flagship Event</h2>
-        </div>
-
-        <div
-          className={`group relative ${mainEvent.bgColor} backdrop-blur-sm border-2 ${mainEvent.borderColor} rounded-2xl p-8 transition-all duration-500 hover:bg-black/30`}
+    <div className="w-full flex flex-col pt-24">
+      {/* Hero */}
+      <section className="max-w-7xl mx-auto px-6 md:px-10 py-16 md:py-24">
+        <TextReveal as="p" className="eyebrow mb-4">
+          Events
+        </TextReveal>
+        <TextReveal as="h1" delay={0.1}>
+          <span className="font-display text-5xl md:text-6xl lg:text-7xl italic text-foreground leading-[1.05]">
+            Competitions, workshops, and&nbsp;wargames.
+          </span>
+        </TextReveal>
+        <TextReveal
+          as="p"
+          delay={0.3}
+          className="mt-6 text-lg text-muted-foreground max-w-2xl leading-relaxed"
         >
-          {/* Header */}
-          <div className="flex flex-col lg:flex-row items-start lg:items-center gap-6 mb-6">
-            <div
-              className={`${mainEvent.color} transition-transform duration-300 group-hover:scale-110`}
-            >
-              {mainEvent.icon}
-            </div>
-            <div className="flex-1 text-left">
-              <div className="flex flex-col lg:flex-row lg:items-center gap-2 lg:gap-4 mb-2">
-                <h3 className={`text-4xl font-bold ${mainEvent.color}`}>
-                  {mainEvent.name}
-                </h3>
-                <span className="bg-emerald-400/20 text-emerald-400 px-3 py-1 rounded-full text-sm font-medium border border-emerald-400/30">
-                  {mainEvent.status}
-                </span>
-              </div>
-              <p className="text-foreground/80 text-lg mb-2">
-                {mainEvent.type}
-              </p>
-              <p className="text-foreground/60">{mainEvent.organizer}</p>
-            </div>
-            <div className="flex flex-col gap-2 text-right">
-              <div className="flex items-center gap-2 bg-emerald-400/10 text-emerald-400 px-4 py-2 rounded-lg">
-                <DollarSign className="w-5 h-5" />
-                <span className="font-bold text-lg">{mainEvent.prizePool}</span>
-              </div>
-              <a
-                href={mainEvent.website}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-emerald-400 hover:bg-emerald-500 text-black px-4 py-2 rounded-lg font-medium transition-all duration-300 hover:scale-105"
-              >
-                Visit Website
-              </a>
-            </div>
-          </div>
+          From daily challenges to global CTFs — events designed for every
+          skill level.
+        </TextReveal>
+      </section>
 
-          {/* Description */}
-          <div className="text-left mb-6">
-            <p className="text-foreground/80 text-lg leading-relaxed">
-              {mainEvent.description}
-            </p>
-          </div>
+      {/* Pearl CTF — Flagship */}
+      <section className="border-t border-border">
+        <div className="max-w-7xl mx-auto px-6 md:px-10 py-16 md:py-24">
+          <SectionReveal>
+            <p className="eyebrow mb-8">Flagship Event</p>
+            <div className="border-l-2 border-primary pl-8 md:pl-12">
+              <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
+                <div className="flex-1">
+                  <div className="flex items-center gap-3 mb-2">
+                    <Trophy className="w-5 h-5 text-primary" />
+                    <span className="font-mono text-xs text-primary uppercase tracking-wider">
+                      {mainEvent.status}
+                    </span>
+                  </div>
+                  <h2 className="font-display text-4xl md:text-5xl italic text-foreground">
+                    {mainEvent.name}
+                  </h2>
+                  <p className="mt-1 font-mono text-sm text-muted-foreground">
+                    {mainEvent.type} · {mainEvent.organizer}
+                  </p>
+                  <p className="mt-4 text-foreground/70 leading-relaxed max-w-xl">
+                    {mainEvent.description}
+                  </p>
+                  <p className="mt-4 font-mono text-sm text-muted-foreground">
+                    Categories:{" "}
+                    <span className="text-foreground/60">
+                      {mainEvent.categories.join(", ")}
+                    </span>
+                  </p>
+                </div>
+                <div className="flex flex-col gap-3 flex-shrink-0">
+                  <div className="font-mono text-sm text-primary border border-primary/30 px-4 py-2 text-center">
+                    Prize Pool: {mainEvent.prizePool}
+                  </div>
+                  <a
+                    href={mainEvent.website}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-mono text-sm text-foreground/60 border border-border px-4 py-2 text-center hover:border-foreground/30 hover:text-foreground transition-all duration-200"
+                  >
+                    pearlctf.in →
+                  </a>
+                </div>
+              </div>
+            </div>
+          </SectionReveal>
+        </div>
+      </section>
 
-          {/* Categories */}
-          <div className="text-left">
-            <h4 className="text-foreground font-semibold mb-3">
-              Challenge Categories:
-            </h4>
-            <div className="flex flex-wrap gap-2">
-              {mainEvent.categories.map((category, index) => (
-                <span
-                  key={index}
-                  className="px-3 py-1 bg-emerald-400/10 text-emerald-400 text-sm rounded-lg border border-emerald-400/20"
-                >
-                  {category}
+      {/* Regular Events — Tabular */}
+      <section className="border-t border-border">
+        <div className="max-w-7xl mx-auto px-6 md:px-10 py-16 md:py-24">
+          <SectionReveal>
+            <p className="eyebrow mb-8">Regular Events</p>
+
+            <div className="border border-border">
+              {/* Table Header */}
+              <div className="hidden md:grid grid-cols-[1fr_auto_auto_auto_32px] gap-4 items-center px-5 py-3 bg-[hsl(var(--surface))] border-b border-border">
+                <span className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
+                  Event
                 </span>
+                <span className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground w-40 text-right">
+                  Type
+                </span>
+                <span className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground w-28 text-right">
+                  Target
+                </span>
+                <span className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground w-28 text-right">
+                  Format
+                </span>
+                <span className="w-4" />
+              </div>
+
+              {/* Event Rows */}
+              {otherEvents.map((event, i) => (
+                <ExpandableEvent key={event.name} event={event} index={i} />
               ))}
             </div>
-          </div>
+          </SectionReveal>
         </div>
       </section>
 
-      {/* Other Events */}
-      <section className="w-full">
-        <div className="flex items-center gap-3 mb-8">
-          <Calendar className="w-8 h-8 text-primary" />
-          <h2 className="text-3xl font-bold text-foreground">Regular Events</h2>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {otherEvents.map((event, index) => (
-            <div
-              key={event.name}
-              className={`group relative ${event.bgColor} backdrop-blur-sm border-2 ${event.borderColor} rounded-2xl p-6 transition-all duration-500 hover:bg-black/30`}
-              style={{
-                animationDelay: `${index * 150}ms`,
-                animation: "fadeInUp 0.6s ease-out forwards",
-              }}
-            >
-              {/* Header */}
-              <div className="flex items-start gap-4 mb-4">
-                <div
-                  className={`${event.color} transition-transform duration-300 group-hover:scale-110`}
-                >
-                  {event.icon}
-                </div>
-                <div className="flex-1 text-left">
-                  <h3 className={`text-2xl font-bold ${event.color} mb-1`}>
-                    {event.name}
-                  </h3>
-                  <p className="text-foreground/80 font-medium">{event.type}</p>
-                </div>
-              </div>
-
-              {/* Description */}
-              <div className="text-left mb-4">
-                <p className="text-foreground/70 leading-relaxed">
-                  {event.description}
-                </p>
-              </div>
-
-              {/* Event Details */}
-              <div className="flex flex-wrap gap-2 text-left">
-                {event.target && (
-                  <div className="flex items-center gap-2 bg-white/5 text-foreground/80 px-3 py-1 rounded-lg text-sm">
-                    <Users className="w-4 h-4" />
-                    {event.target}
-                  </div>
-                )}
-                {event.frequency && (
-                  <div className="flex items-center gap-2 bg-white/5 text-foreground/80 px-3 py-1 rounded-lg text-sm">
-                    <Clock className="w-4 h-4" />
-                    {event.frequency}
-                  </div>
-                )}
-                {event.duration && (
-                  <div className="flex items-center gap-2 bg-white/5 text-foreground/80 px-3 py-1 rounded-lg text-sm">
-                    <Clock className="w-4 h-4" />
-                    {event.duration}
-                  </div>
-                )}
-                {event.format && (
-                  <div className="flex items-center gap-2 bg-white/5 text-foreground/80 px-3 py-1 rounded-lg text-sm">
-                    <Target className="w-4 h-4" />
-                    {event.format}
-                  </div>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Call to Action */}
-      <section className="w-full mt-16">
-        <div className="glass rounded-2xl p-8 text-center border-2 border-primary/30 hover:border-primary/60 transition-all duration-500">
-          <h3 className="text-2xl font-bold text-foreground mb-4">
-            Ready to Join the Action?
-          </h3>
-          <p className="text-foreground/70 mb-6 max-w-2xl mx-auto">
-            Whether you&apos;re a beginner looking to learn or an expert ready
-            to compete, we have events designed for every skill level. Join
-            CyberLabs and be part of the cybersecurity community!
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
+      {/* CTA */}
+      <section className="border-t border-border">
+        <div className="max-w-7xl mx-auto px-6 md:px-10 py-16 md:py-24 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+          <SectionReveal>
+            <h2 className="font-display text-3xl md:text-4xl italic text-foreground">
+              Ready to compete?
+            </h2>
+            <p className="mt-3 text-muted-foreground max-w-md">
+              No prior experience required. Start with daily challenges and
+              work your way up to global competitions.
+            </p>
+          </SectionReveal>
+          <SectionReveal delay={0.2}>
+            <Link
               href="/join-us"
-              className="bg-card hover:bg-card/70 text-foreground border border-border hover:border-primary/30 px-6 py-3 rounded-lg font-medium transition-all duration-300"
+              className="font-mono text-sm text-primary border border-primary/40 px-6 py-2.5 hover:bg-primary/10 transition-all duration-200"
             >
-              Join Us!
-            </a>
-          </div>
+              Join Us →
+            </Link>
+          </SectionReveal>
         </div>
       </section>
     </div>

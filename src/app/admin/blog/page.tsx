@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import GlitchText from "@/components/GlitchText";
+// GlitchText removed in redesign
 import { createClient } from "@/utils/supabase/client";
 
 export default function AdminBlogsPage() {
@@ -137,7 +137,7 @@ export default function AdminBlogsPage() {
         className="whitespace-nowrap mb-8 text-3xl md:text-5xl"
       >
         Blog Management
-      </GlitchText>
+      </h1>
       <p className="text-foreground/70 text-lg mb-12 text-center max-w-2xl">
         Add new blog posts and writeups to share with the community. Support
         both Markdown articles and PDF documents.

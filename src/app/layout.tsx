@@ -3,9 +3,9 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
-import { Fira_Code } from "next/font/google";
-import { SpeedInsights } from '@vercel/speed-insights/next';
-import { Analytics } from '@vercel/analytics/next';
+import { Fira_Code, Space_Grotesk } from "next/font/google";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
 
 const firaCode = Fira_Code({
   subsets: ["latin"],
@@ -13,9 +13,16 @@ const firaCode = Fira_Code({
   variable: "--font-fira-code",
 });
 
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-space-grotesk",
+});
+
 export const metadata: Metadata = {
-  title: "Infosec",
-  description: "Information Security division of Cyberlabs IIT (ISM) Dhanbad",
+  title: "Infosec — Cyberlabs IIT (ISM) Dhanbad",
+  description:
+    "Information Security division of Cyberlabs, IIT (ISM) Dhanbad. We break things to understand them.",
 };
 
 export default function RootLayout({
@@ -32,22 +39,21 @@ export default function RootLayout({
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
         />
+        {/* Instrument Serif — display headlines only */}
         <link
-          href="https://fonts.googleapis.com/css2?family=Hubot+Sans:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap"
           rel="stylesheet"
         />
       </head>
       <body
-        className={`${firaCode.variable} font-mono antialiased flex flex-col min-h-screen`}
+        className={`${firaCode.variable} ${spaceGrotesk.variable} font-sans antialiased flex flex-col min-h-screen`}
       >
         <Header />
-        <main className="relative flex flex-1 flex-col items-center justify-center p-4">
-          {children}
-        </main>
+        <main className="relative flex flex-1 flex-col">{children}</main>
         <Footer />
         <Toaster />
-	<Analytics />
-	<SpeedInsights />
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

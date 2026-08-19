@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import GlitchText from "@/components/GlitchText";
+// GlitchText removed in redesign
 import { createClient } from "@/utils/supabase/client";
 import { format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
@@ -129,7 +129,7 @@ export default function AnnouncementsPage() {
         className="whitespace-nowrap mb-8 text-3xl md:text-5xl"
       >
         Announcements
-      </GlitchText>
+      </h1>
       <p className="text-foreground/70 text-lg mb-12 text-center max-w-2xl">
         Post announcements and schedule events for the club.
       </p>

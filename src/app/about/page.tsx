@@ -1,15 +1,10 @@
-// app/about/page.tsx
-
 import { createClient } from "@/utils/supabase/server";
-import GlitchText from "@/components/GlitchText";
+import { TextReveal } from "@/components/TextReveal";
+import { SectionReveal } from "@/components/SectionReveal";
 import { Trophy, Zap, Users, Crown } from "lucide-react";
 
-// This tells Next.js to cache this page and re-fetch the data from Supabase
-// at most once every hour. Adjust the time (in seconds) as needed.
 export const revalidate = 172800;
 
-// It's good practice to define the shape of the data you're fetching.
-// This gives you type safety and autocompletion in your code.
 type Level = {
   id: string;
   name: string;
@@ -22,35 +17,25 @@ type Member = {
   id: string;
   username: string;
   created_at: string;
-  levels: Level | null; // The 'levels' property will contain the joined data
+  levels: Level | null;
 };
 
-// Icon mapping for database icon names
 const iconMap: Record<string, JSX.Element> = {
-  trophy: <Trophy className="w-8 h-8" />,
-  zap: <Zap className="w-8 h-8" />,
-  users: <Users className="w-8 h-8" />,
-  crown: <Crown className="w-8 h-8" />,
+  trophy: <Trophy className="w-4 h-4" />,
+  zap: <Zap className="w-4 h-4" />,
+  users: <Users className="w-4 h-4" />,
+  crown: <Crown className="w-4 h-4" />,
 };
 
-// Function to get icon component from database string
 function getIcon(iconName: string | undefined): JSX.Element {
-  if (!iconName) return <Users className="w-8 h-8" />; // Default icon
-
-  // Remove any emoji or special characters and convert to lowercase
+  if (!iconName) return <Users className="w-4 h-4" />;
   const cleanIconName = iconName.toLowerCase().replace(/[^\w]/g, "");
-
-  return iconMap[cleanIconName] || <Users className="w-8 h-8" />;
+  return iconMap[cleanIconName] || <Users className="w-4 h-4" />;
 }
 
 export default async function AboutPage() {
-  // createClient() is now synchronous and gets cookies automatically
-  // on the server, so you can call it directly.
   const supabase = await createClient();
 
-  // Fetch the members data.
-  // The 'select' query with 'levels(...)' tells Supabase to perform a JOIN
-  // and include the details from the 'levels' table for each member.
   const { data: members, error } = await supabase
     .from("members")
     .select(
@@ -69,134 +54,135 @@ export default async function AboutPage() {
     )
     .order("created_at", { ascending: true });
 
-  // Always handle potential errors when fetching data.
   if (error) {
     console.error("Error fetching members:", error);
     return (
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center flex flex-col items-center min-h-screen">
-        <p className="text-red-500">
+      <div className="w-full max-w-7xl mx-auto px-6 md:px-10 py-32 text-center min-h-screen">
+        <p className="text-destructive font-mono text-sm">
           Could not fetch team members. Please try again later.
         </p>
       </div>
     );
   }
 
-  // If there are no members, display a helpful message.
-  if (!members || members.length === 0) {
-    return (
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center flex flex-col items-center min-h-screen">
-        <GlitchText
-          speed={1}
-          enableShadows={true}
-          enableOnHover={true}
-          className="whitespace-nowrap mb-6"
-        >
-          Our Team
-        </GlitchText>
-        <p>No team members found.</p>
-      </div>
-    );
-  }
+  // Group members by level
+  const membersByLevel = (members || []).reduce(
+    (acc, member) => {
+      const levelName = member.levels?.name || "Member";
+      if (!acc[levelName]) {
+        acc[levelName] = {
+          levelInfo: member.levels,
+          members: [],
+        };
+      }
+      acc[levelName].members.push(member);
+      return acc;
+    },
+    {} as Record<string, { levelInfo: Level | null; members: Member[] }>
+  );
 
-  // Group members by their level
-  const membersByLevel = members.reduce((acc, member) => {
-    const levelName = member.levels?.name || "Member";
-    if (!acc[levelName]) {
-      acc[levelName] = {
-        levelInfo: member.levels,
-        members: [],
-      };
-    }
-    acc[levelName].members.push(member);
-    return acc;
-  }, {} as Record<string, { levelInfo: Level | null; members: Member[] }>);
-
-  // Convert to array and sort by level order (you might want to add an order field to your levels table)
   const levelGroups = Object.entries(membersByLevel);
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center flex flex-col items-center min-h-screen">
-      {/* Header */}
-      <div className="flex flex-col justify-center items-center w-full relative mb-16">
-        <div className="relative z-10">
-          <GlitchText
-            speed={1}
-            enableShadows={true}
-            enableOnHover={true}
-            className="whitespace-nowrap mb-6"
-          >
-            Our Team
-          </GlitchText>
-          <p className="text-lg text-foreground/70 max-w-2xl mx-auto">
-            Meet the talented individuals in our Club.
-          </p>
-        </div>
-      </div>
+    <div className="w-full flex flex-col pt-24">
+      {/* Hero */}
+      <section className="max-w-7xl mx-auto px-6 md:px-10 py-16 md:py-24">
+        <TextReveal as="p" className="eyebrow mb-4">
+          The Team
+        </TextReveal>
+        <TextReveal as="h1" delay={0.1}>
+          <span className="font-display text-5xl md:text-6xl lg:text-7xl italic text-foreground leading-[1.05]">
+            People behind the&nbsp;exploits.
+          </span>
+        </TextReveal>
+        <TextReveal
+          as="p"
+          delay={0.3}
+          className="mt-6 text-lg text-muted-foreground max-w-2xl leading-relaxed"
+        >
+          Meet the researchers, competitors, and builders who make up
+          Infosec at Cyberlabs. Every skill level, one shared curiosity.
+        </TextReveal>
+      </section>
 
-      {/* Members Grid */}
-      <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {levelGroups.map(
-          ([levelName, { levelInfo, members: levelMembers }], index) => {
-            return (
-              <div
-                key={levelName}
-                className={`group relative bg-black/5 backdrop-blur-sm border-2 ${
-                  levelInfo?.border_color || "border-gray-200"
-                } rounded-2xl p-8 transition-all duration-500 hover:bg-black/30`}
-                style={{
-                  animationDelay: `${index * 150}ms`,
-                  animation: "fadeInUp 0.6s ease-out forwards",
-                }}
-              >
-                {/* Header */}
-                <div className="flex items-center gap-4 mb-6">
-                  <div
-                    className={`transition-transform duration-300 group-hover:scale-110 ${
-                      levelInfo?.color || "text-gray-600"
-                    }`}
-                  >
-                    {getIcon(levelInfo?.icon)}
-                  </div>
-                  <div className="text-left">
-                    <h2
-                      className={`text-2xl font-bold ${
-                        levelInfo?.color || "text-gray-600"
-                      }`}
-                    >
-                      {levelName}
-                    </h2>
-                  </div>
-                  <div className="ml-auto">
-                    <span className="text-foreground/60 bg-white/5 px-3 py-1 rounded-full text-sm font-medium">
-                      {levelMembers.length}
-                    </span>
-                  </div>
-                </div>
+      {/* Member Directory */}
+      <section className="border-t border-border">
+        <div className="max-w-7xl mx-auto px-6 md:px-10 py-16 md:py-24">
+          {(!members || members.length === 0) ? (
+            <p className="text-muted-foreground">No team members found.</p>
+          ) : (
+            <div className="space-y-16">
+              {levelGroups.map(
+                ([levelName, { levelInfo, members: levelMembers }], groupIndex) => (
+                  <SectionReveal key={levelName} delay={groupIndex * 0.1}>
+                    {/* Level Header */}
+                    <div className="flex items-center gap-3 mb-6">
+                      <span className={levelInfo?.color || "text-foreground"}>
+                        {getIcon(levelInfo?.icon)}
+                      </span>
+                      <h2
+                        className={`font-sans text-xl font-medium ${
+                          levelInfo?.color || "text-foreground"
+                        }`}
+                      >
+                        {levelName}
+                      </h2>
+                      <span className="font-mono text-xs text-muted-foreground ml-auto">
+                        {levelMembers.length}{" "}
+                        {levelMembers.length === 1 ? "member" : "members"}
+                      </span>
+                    </div>
 
-                {/* Members */}
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                  {levelMembers.map((member, memberIndex) => (
-                    <div
-                      key={member.id}
-                      className="group/member relative bg-white/5 backdrop-blur-sm hover:bg-white/10 border border-white/5 hover:border-white/10 px-4 py-3 rounded-xl transition-all duration-300 cursor-pointer"
-                      style={{
-                        animationDelay: `${index * 150 + memberIndex * 50}ms`,
-                        animation: "slideInFromBottom 0.4s ease-out forwards",
-                      }}
-                    >
-                      <div className="flex items-center gap-2">
-                        <span className="text-foreground/90 group-hover/member:text-foreground text-sm font-medium truncate">
-                          {member.username}
+                    {/* Member Table */}
+                    <div className="border border-border">
+                      {/* Table Header */}
+                      <div className="hidden md:grid grid-cols-[1fr_auto_auto] gap-4 px-5 py-3 bg-[hsl(var(--surface))] border-b border-border">
+                        <span className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
+                          Username
+                        </span>
+                        <span className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground w-32 text-right">
+                          Role
+                        </span>
+                        <span className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground w-28 text-right">
+                          Joined
                         </span>
                       </div>
+
+                      {/* Table Rows */}
+                      {levelMembers.map((member) => (
+                        <div
+                          key={member.id}
+                          className="grid grid-cols-1 md:grid-cols-[1fr_auto_auto] gap-2 md:gap-4 px-5 py-3.5 border-b border-border last:border-b-0 hover:bg-[hsl(var(--surface))] transition-colors duration-150 group"
+                        >
+                          <span className="font-sans text-sm text-foreground group-hover:text-primary transition-colors duration-150">
+                            {member.username}
+                          </span>
+                          <span
+                            className={`font-mono text-xs w-32 text-right ${
+                              levelInfo?.color || "text-muted-foreground"
+                            }`}
+                          >
+                            {levelName}
+                          </span>
+                          <span className="font-mono text-xs text-muted-foreground w-28 text-right">
+                            {new Date(member.created_at).toLocaleDateString(
+                              "en-US",
+                              {
+                                year: "numeric",
+                                month: "short",
+                              }
+                            )}
+                          </span>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
-              </div>
-            );
-          }
-        )}
-      </div>
+                  </SectionReveal>
+                )
+              )}
+            </div>
+          )}
+        </div>
+      </section>
     </div>
   );
 }

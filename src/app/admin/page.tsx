@@ -1,4 +1,4 @@
-import GlitchText from "@/components/GlitchText";
+// GlitchText removed in redesign
 import {
   Users,
   BookOpen,
@@ -22,7 +22,7 @@ export default function Admin() {
             className="whitespace-nowrap"
           >
             Admin
-          </GlitchText>
+          </h1>
           <div className="rounded-xl p-4 max-w-4xl mx-auto">
             <p className="text-lg md:text-xl text-foreground/90 leading-relaxed mb-8">
               Hi! Think twice before making any changes on here :(

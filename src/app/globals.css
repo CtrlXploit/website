@@ -4,56 +4,39 @@
 
 @layer base {
   :root {
-    --background: 0 0% 0%;
-    --foreground: 0 0% 100%;
-    --card: 0 0% 4%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 4%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 235 85% 64%;
-    --primary-foreground: 0 0% 0%;
-    --secondary: 0 0% 8%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 8%;
-    --muted-foreground: 0 0% 65%;
-    --accent: 0 0% 8%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 8%;
-    --input: 0 0% 8%;
-    --ring: 235 85% 64%;
-    --radius: 0.375rem;
+    /* ── Midnight Precision palette ── */
+    --void: 240 6% 4%;         /* #0A0A0B — deep canvas */
+    --surface: 240 5% 8%;      /* #141416 — elevated panels */
+    --surface-2: 240 4% 12%;   /* #1C1C1F — hover/active */
+    --ink: 30 5% 90%;          /* #E8E6E3 — warm off-white text */
+    --ink-muted: 30 3% 41%;    /* #6B6966 — secondary text */
+    --border-color: 240 4% 15%; /* #252528 — hairline borders */
+    --accent: 38 78% 56%;      /* #E8A838 — amber */
+    --accent-dim: 38 78% 56%;  /* used with /20 for backgrounds */
 
-    --bg-color: #1b1b1d;
-    --text-color-primary: #ffffff;
-    --text-color-secondary: #b9bbbe;
-    --accent-color: #5865f2;
-    --border-color: #202225;
-  }
-
-  .dark {
-    --background: 240, 5%, 11%;
-    --foreground: 0 0% 100%;
-    --card: 0 0% 4%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 4%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0,
-      66%,
-      55%;
-    --primary-foreground: 0 0% 0%;
-    --secondary: 0 0% 8%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 8%;
-    --muted-foreground: 0 0% 65%;
-    --accent: 0 0% 8%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
+    /* ── shadcn/ui compatible tokens ── */
+    --background: var(--void);
+    --foreground: var(--ink);
+    --card: var(--surface);
+    --card-foreground: var(--ink);
+    --popover: var(--surface);
+    --popover-foreground: var(--ink);
+    --primary: var(--accent);
+    --primary-foreground: 240 6% 4%;
+    --secondary: var(--surface-2);
+    --secondary-foreground: var(--ink);
+    --muted: var(--surface);
+    --muted-foreground: var(--ink-muted);
+    --accent-ui: var(--surface-2);
+    --accent-foreground: var(--ink);
+    --destructive: 0 63% 31%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 8%;
-    --input: 0 0% 8%;
-    --ring: 235 85% 64%;
+    --border: var(--border-color);
+    --input: var(--border-color);
+    --ring: var(--accent);
+    --radius: 0.125rem; /* 2px — sharp precision */
+
+    color-scheme: dark;
   }
 }
 
@@ -62,64 +45,68 @@
     @apply border-border;
   }
 
-  body {
-    @apply bg-background text-foreground;
-    background-color: 0, 14%, 10%;
-    background-image:
-      linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-    background-size: 40px 40px;
-    background-attachment: fixed;
-    min-height: 100vh;
+  html {
+    background: hsl(var(--void));
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--accent) / 0.3) hsl(var(--void));
+    scrollbar-gutter: stable;
   }
 
-  /* Discord-inspired scrollbar */
+  body {
+    @apply bg-background text-foreground;
+    min-height: 100vh;
+    /* Subtle noise texture — gives the void surface grain without screaming "tech" */
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 256px 256px;
+  }
+
+  /* Scrollbar — amber accent, sharp edges */
   ::-webkit-scrollbar {
     width: 8px;
+    height: 8px;
   }
 
   ::-webkit-scrollbar-track {
-    background: #202225;
+    background: hsl(var(--void));
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #5865f2;
-    border-radius: 4px;
+    background: hsl(var(--accent) / 0.25);
+    border: 2px solid hsl(var(--void));
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: #4752c4;
+    background: hsl(var(--accent) / 0.5);
   }
 
-  /* Full page grid overlay */
-  html {
-    background: var(--bg-color);
-    background-image:
-      linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-    background-size: 40px 40px;
-    background-attachment: fixed;
+  ::-webkit-scrollbar-corner {
+    background: hsl(var(--void));
   }
 
-  /* Enhanced grid pattern utility class */
-  .grid-pattern {
-    background-image:
-      linear-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.15) 1px, transparent 1px);
-    background-size: 20px 20px;
+  /* Selection color */
+  ::selection {
+    background: hsl(var(--accent) / 0.25);
+    color: hsl(var(--ink));
   }
+}
 
-  .grid-pattern-large {
-    background-image:
-      linear-gradient(rgba(255, 255, 255, 0.1) 2px, transparent 2px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.1) 2px, transparent 2px);
-    background-size: 80px 80px;
-  }
-
+@layer utilities {
   .line-clamp-3 {
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
+  }
+
+  /* Hairline separator */
+  .hairline {
+    height: 1px;
+    background: hsl(var(--border-color));
+  }
+
+  /* Eyebrow label — monospace, small, spaced */
+  .eyebrow {
+    @apply font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground;
   }
 }

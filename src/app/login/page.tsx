@@ -1,6 +1,6 @@
 "use client";
 
-import GlitchText from "@/components/GlitchText";
+// GlitchText removed in redesign
 import Link from "next/link";
 import { useState } from "react";
 import { createClient } from "@/utils/supabase/client";
@@ -44,7 +44,7 @@ export default function Login() {
             className="whitespace-nowrap"
           >
             Login
-          </GlitchText>
+          </h1>
 
           <div className="rounded-xl p-8 max-w-md mx-auto bg-border backdrop-blur-sm shadow-lg">
             <h2 className="text-xl md:text-2xl font-bold text-primary mb-6">

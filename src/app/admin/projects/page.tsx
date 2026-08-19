@@ -1,4 +1,4 @@
-import GlitchText from "@/components/GlitchText";
+// GlitchText removed in redesign
 import { createClient } from "@/utils/supabase/server";
 import ProjectList from "./ProjectList";
 
@@ -40,7 +40,7 @@ export default async function ProjectsPage() {
         className="whitespace-nowrap mb-8 text-3xl md:text-5xl"
       >
         Projects
-      </GlitchText>
+      </h1>
       <p className="text-foreground/70 text-lg mb-12 text-center max-w-2xl">
         Manage the club's projects. Add, edit, or remove project entries.
       </p>

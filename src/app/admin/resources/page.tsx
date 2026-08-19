@@ -1,5 +1,5 @@
 // app/admin/resources/page.tsx
-import GlitchText from "@/components/GlitchText";
+// GlitchText removed in redesign
 import { createClient } from "@/utils/supabase/server";
 import ResourceList from "./ResourceList";
 
@@ -40,7 +40,7 @@ export default async function ResourcesPage() {
         className="whitespace-nowrap mb-8 text-3xl md:text-5xl"
       >
         Resources
-      </GlitchText>
+      </h1>
       <p className="text-foreground/70 text-lg mb-12 text-center max-w-2xl">
         Manage resources for the club. Add, edit, or remove resources as needed.
       </p>
