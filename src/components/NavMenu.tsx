@@ -39,7 +39,7 @@ export function NavMenu({ onClose }: navProps) {
   }, [onClose]);
 
   return (
-    <div className="fixed inset-0 z-50 bg-[hsl(240_6%_4%/0.95)] backdrop-blur-xl animate-fade-in">
+    <div className="fixed inset-0 z-50 bg-background/95 backdrop-blur-xl animate-fade-in">
       <div className="h-full w-full grid grid-rows-[auto_1fr_auto] text-foreground">
         {/* Header */}
         <header className="flex justify-between items-center py-5 px-6 md:px-10 border-b border-border">

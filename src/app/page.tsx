@@ -24,7 +24,7 @@ export default function Home() {
           className="absolute inset-0 pointer-events-none"
           style={{
             background:
-              "radial-gradient(ellipse at center, transparent 30%, hsl(240 6% 4%) 80%)",
+              "radial-gradient(ellipse at center, transparent 30%, hsl(var(--void)) 80%)",
           }}
         />
 
@@ -64,13 +64,13 @@ export default function Home() {
           <TextReveal delay={0.7} className="mt-10 flex gap-4">
             <Link
               href="/join-us"
-              className="font-mono text-sm text-primary border border-primary/40 px-6 py-2.5 hover:bg-primary/10 transition-all duration-200"
+              className="font-bold uppercase tracking-widest text-sm bg-primary text-primary-foreground brutal-shadow brutal-hover px-8 py-3"
             >
-              Join Us →
+              Join Us
             </Link>
             <Link
               href="/about"
-              className="font-mono text-sm text-foreground/60 border border-border px-6 py-2.5 hover:border-foreground/30 hover:text-foreground transition-all duration-200"
+              className="font-bold uppercase tracking-widest text-sm bg-surface text-foreground brutal-shadow brutal-hover px-8 py-3"
             >
               Learn More
             </Link>
@@ -99,7 +99,7 @@ export default function Home() {
           </h2>
         </SectionReveal>
 
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-px bg-border">
+        <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
           {[
             {
               title: "CTF Competitions",
@@ -115,11 +115,11 @@ export default function Home() {
             },
           ].map((item, i) => (
             <SectionReveal key={item.title} delay={i * 0.15}>
-              <div className="bg-background p-8 md:p-10 h-full">
-                <span className="font-mono text-xs text-primary">
+              <div className="bg-surface p-8 md:p-10 h-full brutal-shadow">
+                <span className="font-mono text-xs text-primary font-bold">
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <h3 className="mt-3 font-sans text-xl font-medium text-foreground">
+                <h3 className="mt-3 font-sans text-xl font-bold text-foreground">
                   {item.title}
                 </h3>
                 <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
@@ -144,16 +144,16 @@ export default function Home() {
               researcher, there&apos;s a place for you here.
             </p>
           </SectionReveal>
-          <SectionReveal delay={0.2} className="flex gap-4 flex-shrink-0">
+          <SectionReveal delay={0.2} className="flex flex-wrap gap-4 flex-shrink-0">
             <Link
               href="/join-us"
-              className="font-mono text-sm text-primary border border-primary/40 px-6 py-2.5 hover:bg-primary/10 transition-all duration-200"
+              className="font-bold uppercase tracking-widest text-sm bg-primary text-primary-foreground brutal-shadow brutal-hover px-8 py-3"
             >
-              Join Us →
+              Join Us
             </Link>
             <Link
               href="/events"
-              className="font-mono text-sm text-foreground/60 border border-border px-6 py-2.5 hover:border-foreground/30 hover:text-foreground transition-all duration-200"
+              className="font-bold uppercase tracking-widest text-sm bg-surface text-foreground brutal-shadow brutal-hover px-8 py-3"
             >
               View Events
             </Link>

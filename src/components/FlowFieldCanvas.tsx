@@ -91,6 +91,19 @@ export function FlowFieldCanvas() {
     let frame = 0;
     let time = 0;
 
+    let voidColor = "48, 20%, 95%";
+    let inkColor = "0, 0%, 0%";
+
+    const updateColors = () => {
+      const style = getComputedStyle(document.documentElement);
+      const v = style.getPropertyValue("--void").trim().replace(/ /g, ", ");
+      const i = style.getPropertyValue("--ink").trim().replace(/ /g, ", ");
+      if (v && i) {
+        voidColor = v;
+        inkColor = i;
+      }
+    };
+
     const resize = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       width = canvas.clientWidth;
@@ -99,8 +112,10 @@ export function FlowFieldCanvas() {
       canvas.height = height * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
+      updateColors();
+      
       // Reset trail canvas
-      ctx.fillStyle = "hsl(240 6% 4%)";
+      ctx.fillStyle = `hsl(${voidColor})`;
       ctx.fillRect(0, 0, width, height);
     };
 
@@ -128,7 +143,7 @@ export function FlowFieldCanvas() {
       time += 0.002;
 
       // Fade trail — darker overlay gives longer trails
-      ctx.fillStyle = "hsla(240, 6%, 4%, 0.06)";
+      ctx.fillStyle = `hsla(${voidColor}, 0.08)`;
       ctx.fillRect(0, 0, width, height);
 
       for (const p of particles) {
@@ -178,8 +193,8 @@ export function FlowFieldCanvas() {
         ctx.beginPath();
         ctx.moveTo(p.prevX, p.prevY);
         ctx.lineTo(p.x, p.y);
-        ctx.strokeStyle = `hsla(38, 78%, 56%, ${p.opacity * lifeFade * 0.6})`;
-        ctx.lineWidth = 1;
+        ctx.strokeStyle = `hsla(${inkColor}, ${p.opacity * lifeFade * 0.8})`;
+        ctx.lineWidth = 1.5;
         ctx.stroke();
       }
 
@@ -209,9 +224,15 @@ export function FlowFieldCanvas() {
 
     window.addEventListener("resize", handleResize);
 
+    const observer = new MutationObserver(() => {
+      updateColors();
+    });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+
     return () => {
       cancelAnimationFrame(frame);
       window.removeEventListener("resize", handleResize);
+      observer.disconnect();
     };
   }, []);
 

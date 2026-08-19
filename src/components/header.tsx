@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
 import { NavMenu } from "@/components/NavMenu";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const navLinks = [
   { label: "About", href: "/about" },
@@ -30,7 +31,7 @@ export function Header() {
       <header
         className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
           scrolled
-            ? "bg-[hsl(240_6%_4%/0.85)] backdrop-blur-md border-b border-border"
+            ? "bg-background/85 backdrop-blur-md border-b border-border"
             : "bg-transparent border-b border-transparent"
         }`}
       >
@@ -64,16 +65,20 @@ export function Header() {
             >
               Join Us
             </Link>
+            <ThemeToggle />
           </nav>
 
           {/* Mobile Hamburger */}
-          <button
-            className="md:hidden p-2 text-foreground/60 hover:text-foreground transition-colors"
-            onClick={() => setIsMenuOpen(true)}
-          >
-            <Menu className="h-5 w-5" />
-            <span className="sr-only">Open menu</span>
-          </button>
+          <div className="md:hidden flex items-center gap-4">
+            <ThemeToggle />
+            <button
+              className="p-2 brutal-border bg-surface text-foreground brutal-shadow-hover hover:-translate-y-0.5 hover:-translate-x-0.5"
+              onClick={() => setIsMenuOpen(true)}
+            >
+              <Menu className="h-5 w-5" />
+              <span className="sr-only">Open menu</span>
+            </button>
+          </div>
         </div>
       </header>
 

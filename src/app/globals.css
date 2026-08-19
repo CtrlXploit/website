@@ -4,15 +4,16 @@
 
 @layer base {
   :root {
-    /* ── Midnight Precision palette ── */
-    --void: 240 6% 4%;         /* #0A0A0B — deep canvas */
-    --surface: 240 5% 8%;      /* #141416 — elevated panels */
-    --surface-2: 240 4% 12%;   /* #1C1C1F — hover/active */
-    --ink: 30 5% 90%;          /* #E8E6E3 — warm off-white text */
-    --ink-muted: 30 3% 41%;    /* #6B6966 — secondary text */
-    --border-color: 240 4% 15%; /* #252528 — hairline borders */
-    --accent: 38 78% 56%;      /* #E8A838 — amber */
-    --accent-dim: 38 78% 56%;  /* used with /20 for backgrounds */
+    /* ── Neo-Brutal Hacker Zine palette ── */
+    --void: 48 20% 95%;        /* #F4F4F0 — off-white newsprint / cream */
+    --surface: 0 0% 100%;      /* #FFFFFF — pure white panels */
+    --surface-2: 54 100% 62%;  /* #FFEB3B — electric yellow */
+    --ink: 0 0% 0%;            /* #000000 — pure black text */
+    --ink-muted: 0 0% 35%;     /* #595959 — dark gray secondary text */
+    --border-color: 0 0% 0%;   /* #000000 — thick black borders */
+    --accent: 0 100% 58%;      /* #FF2A2A — electric hacker crimson */
+    --accent-dim: 0 100% 58%;
+    --shadow-color: 0 0% 0%;   /* #000000 — black shadow */
 
     /* ── shadcn/ui compatible tokens ── */
     --background: var(--void);
@@ -22,10 +23,10 @@
     --popover: var(--surface);
     --popover-foreground: var(--ink);
     --primary: var(--accent);
-    --primary-foreground: 240 6% 4%;
+    --primary-foreground: 0 0% 100%;
     --secondary: var(--surface-2);
     --secondary-foreground: var(--ink);
-    --muted: var(--surface);
+    --muted: 0 0% 90%;
     --muted-foreground: var(--ink-muted);
     --accent-ui: var(--surface-2);
     --accent-foreground: var(--ink);
@@ -33,8 +34,41 @@
     --destructive-foreground: 0 0% 98%;
     --border: var(--border-color);
     --input: var(--border-color);
-    --ring: var(--accent);
-    --radius: 0.125rem; /* 2px — sharp precision */
+    --ring: var(--ink);
+    --radius: 0px; /* brutalism uses sharp edges */
+
+    color-scheme: light;
+  }
+
+  .dark {
+    /* ── Dark Neo-Brutal Hacker Zine palette ── */
+    --void: 0 0% 5%;           /* #0D0D0D — near black void */
+    --surface: 0 0% 12%;       /* #1F1F1F — dark gray panels */
+    --surface-2: 330 100% 60%; /* #FF3399 — hot magenta */
+    --ink: 0 0% 100%;          /* #FFFFFF — pure white text */
+    --ink-muted: 0 0% 65%;     /* #A6A6A6 — light gray text */
+    --border-color: 0 0% 100%; /* #FFFFFF — thick white borders */
+    --accent: 190 100% 50%;    /* #00E5FF — electric cyan */
+    --accent-dim: 190 100% 50%;
+    --shadow-color: 0 0% 100%; /* #FFFFFF — white shadow */
+
+    --background: var(--void);
+    --foreground: var(--ink);
+    --card: var(--surface);
+    --card-foreground: var(--ink);
+    --popover: var(--surface);
+    --popover-foreground: var(--ink);
+    --primary: var(--accent);
+    --primary-foreground: 0 0% 0%;
+    --secondary: var(--surface-2);
+    --secondary-foreground: var(--ink);
+    --muted: 0 0% 15%;
+    --muted-foreground: var(--ink-muted);
+    --accent-ui: var(--surface-2);
+    --accent-foreground: var(--ink);
+    --border: var(--border-color);
+    --input: var(--border-color);
+    --ring: var(--ink);
 
     color-scheme: dark;
   }
@@ -48,23 +82,23 @@
   html {
     background: hsl(var(--void));
     scrollbar-width: thin;
-    scrollbar-color: hsl(var(--accent) / 0.3) hsl(var(--void));
-    scrollbar-gutter: stable;
+    scrollbar-color: hsl(var(--ink)) hsl(var(--void));
   }
 
   body {
     @apply bg-background text-foreground;
     min-height: 100vh;
-    /* Subtle noise texture — gives the void surface grain without screaming "tech" */
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    /* Noise texture overlay for that printed zine feel */
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
     background-repeat: repeat;
     background-size: 256px 256px;
   }
 
-  /* Scrollbar — amber accent, sharp edges */
+  /* Scrollbar */
   ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 14px;
+    height: 14px;
+    border-left: 2px solid hsl(var(--border-color));
   }
 
   ::-webkit-scrollbar-track {
@@ -72,21 +106,23 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background: hsl(var(--accent) / 0.25);
-    border: 2px solid hsl(var(--void));
+    background: hsl(var(--ink));
+    border: 2px solid hsl(var(--border-color));
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: hsl(var(--accent) / 0.5);
+    background: hsl(var(--accent));
   }
 
   ::-webkit-scrollbar-corner {
     background: hsl(var(--void));
+    border-left: 2px solid hsl(var(--border-color));
+    border-top: 2px solid hsl(var(--border-color));
   }
 
   /* Selection color */
   ::selection {
-    background: hsl(var(--accent) / 0.25);
+    background: hsl(var(--surface-2));
     color: hsl(var(--ink));
   }
 }
@@ -108,5 +144,24 @@
   /* Eyebrow label — monospace, small, spaced */
   .eyebrow {
     @apply font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground;
+  }
+
+  .brutal-border {
+    @apply border-2;
+    border-color: hsl(var(--border-color));
+  }
+
+  .brutal-shadow {
+    @apply shadow-brutal border-2;
+    border-color: hsl(var(--border-color));
+  }
+
+  .brutal-shadow-lg {
+    @apply shadow-brutal-lg border-2;
+    border-color: hsl(var(--border-color));
+  }
+
+  .brutal-hover {
+    @apply transition-all duration-200 hover:-translate-x-1 hover:-translate-y-1 hover:shadow-brutal-lg;
   }
 }

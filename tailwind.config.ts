@@ -79,6 +79,10 @@ export default {
         md: "var(--radius)",
         sm: "var(--radius)",
       },
+      boxShadow: {
+        brutal: "4px 4px 0px 0px hsl(var(--shadow-color))",
+        "brutal-lg": "8px 8px 0px 0px hsl(var(--shadow-color))",
+      },
       keyframes: {
         "accordion-down": {
           from: { height: "0" },
