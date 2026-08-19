@@ -15,12 +15,7 @@ export default function Admin() {
       {/* Admin Dashboard Section */}
       <div className="min-h-[80vh] flex flex-col justify-center items-center w-full relative overflow-hidden">
         <div className="relative z-10">
-          <GlitchText
-            speed={1}
-            enableShadows={true}
-            enableOnHover={true}
-            className="whitespace-nowrap"
-          >
+          <h1 className="font-display text-4xl md:text-5xl italic text-foreground">
             Admin
           </h1>
           <div className="rounded-xl p-4 max-w-4xl mx-auto">

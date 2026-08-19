@@ -130,12 +130,7 @@ export default function AdminBlogsPage() {
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 flex flex-col items-center min-h-screen">
-      <GlitchText
-        speed={1}
-        enableShadows
-        enableOnHover
-        className="whitespace-nowrap mb-8 text-3xl md:text-5xl"
-      >
+      <h1 className="font-display text-4xl md:text-5xl italic text-foreground mb-8">
         Blog Management
       </h1>
       <p className="text-foreground/70 text-lg mb-12 text-center max-w-2xl">

@@ -37,12 +37,7 @@ export default function Login() {
     <div className="w-full max-w-6xl text-center flex flex-col items-center">
       <div className="min-h-[80vh] flex flex-col justify-center items-center w-full relative overflow-hidden">
         <div className="relative z-10">
-          <GlitchText
-            speed={1}
-            enableShadows={true}
-            enableOnHover={true}
-            className="whitespace-nowrap"
-          >
+          <h1 className="font-display text-4xl md:text-5xl italic text-foreground">
             Login
           </h1>
 
