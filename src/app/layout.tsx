@@ -49,7 +49,7 @@ export default function RootLayout({
       <body
         className={`${firaCode.variable} ${spaceGrotesk.variable} font-sans antialiased flex flex-col min-h-screen`}
       >
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           <Header />
           <main className="relative flex flex-1 flex-col">{children}</main>
           <Footer />

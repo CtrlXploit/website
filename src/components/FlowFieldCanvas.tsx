@@ -17,7 +17,7 @@ export function FlowFieldCanvas() {
         without exposing the edges.
       */}
       <div 
-        className="absolute top-[-48px] left-[-48px] w-[calc(100%+96px)] h-[calc(100%+96px)] opacity-[0.12] dark:opacity-[0.25]"
+        className="absolute top-[-48px] left-[-48px] w-[calc(100%+96px)] h-[calc(100%+96px)] opacity-[0.03]"
         style={{
           // Creates a stark brutalist dot grid using the current theme's ink color
           backgroundImage: `radial-gradient(circle at 3px 3px, hsl(var(--ink)) 2px, transparent 0)`,

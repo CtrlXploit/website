@@ -1,101 +1,44 @@
 import Link from "next/link";
-import { Github } from "lucide-react";
-import { LiaDiscord } from "react-icons/lia";
 
 const footerNav = [
-  { label: "About", href: "/about" },
-  { label: "Events", href: "/events" },
-  { label: "Blog", href: "/blog" },
-  { label: "Projects", href: "/projects" },
-  { label: "Resources", href: "/resources" },
-  { label: "Achievements", href: "/achievements" },
-  { label: "Join Us", href: "/join-us" },
+  { label: "ABOUT", href: "/about" },
+  { label: "EVENTS", href: "/events" },
+  { label: "BLOG", href: "/blog" },
+  { label: "PROJECTS", href: "/projects" },
+  { label: "RESOURCES", href: "/resources" },
+  { label: "ACHIEVEMENTS", href: "/achievements" },
+  { label: "ANNOUNCEMENTS", href: "/announcements" },
+  { label: "WARGAMES", href: "/wargames" },
 ];
 
 export function Footer() {
   return (
-    <footer className="w-full border-t border-border mt-auto">
-      <div className="max-w-7xl mx-auto px-6 md:px-10 py-12 grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8">
-        {/* Column 1: Wordmark + Tagline */}
-        <div>
-          <Link
-            href="/"
-            className="font-mono text-sm font-medium tracking-[0.15em] uppercase text-foreground"
-          >
-            INFOSEC
-          </Link>
-          <p className="mt-3 text-sm text-muted-foreground leading-relaxed max-w-xs">
-            Information Security division of Cyberlabs, IIT&nbsp;(ISM)
-            Dhanbad. We break things to understand&nbsp;them.
-          </p>
+    <footer className="w-full mt-32 pb-10">
+      <div className="max-w-[90rem] mx-auto px-6 md:px-10">
+        
+        {/* Top links layout similar to screenshot 5 */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-24 font-mono text-xs uppercase tracking-widest text-foreground/80">
+          {footerNav.map((item) => (
+             <Link key={item.href} href={item.href} className="hover:text-primary transition-colors duration-200">
+               {item.label}
+             </Link>
+          ))}
         </div>
 
-        {/* Column 2: Navigation */}
-        <div>
-          <h4 className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground mb-4">
-            Navigate
-          </h4>
-          <ul className="space-y-2">
-            {footerNav.map((item) => (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  className="text-sm text-foreground/60 hover:text-primary transition-colors duration-200"
-                >
-                  {item.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Column 3: Connect */}
-        <div>
-          <h4 className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground mb-4">
-            Connect
-          </h4>
-          <div className="flex flex-col gap-3">
-            <Link
-              href="https://github.com/CyberLabs-Infosec/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 text-sm text-foreground/60 hover:text-primary transition-colors duration-200"
-            >
-              <Github className="h-4 w-4" />
-              GitHub
-            </Link>
-            <Link
-              href="https://discord.gg/sMtk8ePEJB"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 text-sm text-foreground/60 hover:text-primary transition-colors duration-200"
-            >
-              <LiaDiscord className="h-4 w-4" />
-              Discord
-            </Link>
-            <Link
-              href="https://pearlctf.in/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 text-sm text-foreground/60 hover:text-primary transition-colors duration-200"
-            >
-              <span className="font-mono text-xs">CTF</span>
-              Pearl CTF
-            </Link>
+        {/* Huge bottom text & small secondary links */}
+        <div className="flex flex-col md:flex-row justify-between items-end gap-10">
+          <h1 className="font-mono text-[4rem] sm:text-[8rem] md:text-[12rem] lg:text-[16rem] leading-none font-bold text-foreground tracking-tighter">
+            Infosec
+          </h1>
+          
+          <div className="flex md:flex-col items-end gap-6 font-mono text-xs uppercase tracking-widest text-foreground/80 mb-4 md:mb-12">
+            <Link href="https://github.com/CyberLabs-Infosec/" className="hover:text-primary">GITHUB</Link>
+            <Link href="https://discord.gg/sMtk8ePEJB" className="hover:text-primary">DISCORD</Link>
+            <Link href="https://pearlctf.in/" className="hover:text-primary">PEARL CTF</Link>
+            <span className="text-foreground/40 mt-4 md:mt-12">&copy;{new Date().getFullYear()}</span>
           </div>
         </div>
-      </div>
-
-      {/* Bottom bar */}
-      <div className="border-t border-border">
-        <div className="max-w-7xl mx-auto px-6 md:px-10 py-4 flex flex-col sm:flex-row justify-between items-center gap-2">
-          <p className="text-xs text-muted-foreground font-mono">
-            &copy; {new Date().getFullYear()} Infosec @ Cyberlabs
-          </p>
-          <p className="text-xs text-muted-foreground font-mono">
-            IIT (ISM) Dhanbad
-          </p>
-        </div>
+        
       </div>
     </footer>
   );

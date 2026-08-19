@@ -17,7 +17,7 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ['"Instrument Serif"', "Georgia", "serif"],
+        display: ['"Space Grotesk"', "system-ui", "sans-serif"],
         body: ['"Space Grotesk"', "system-ui", "sans-serif"],
         mono: ["var(--font-fira-code)", '"Fira Code"', "monospace"],
         sans: ['"Space Grotesk"', "system-ui", "sans-serif"],
@@ -63,25 +63,11 @@ export default {
           "4": "hsl(var(--border-color))",
           "5": "hsl(var(--void))",
         },
-        sidebar: {
-          DEFAULT: "hsl(var(--surface))",
-          foreground: "hsl(var(--ink))",
-          primary: "hsl(var(--accent))",
-          "primary-foreground": "hsl(var(--void))",
-          accent: "hsl(var(--surface-2))",
-          "accent-foreground": "hsl(var(--ink))",
-          border: "hsl(var(--border-color))",
-          ring: "hsl(var(--accent))",
-        },
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "var(--radius)",
         sm: "var(--radius)",
-      },
-      boxShadow: {
-        brutal: "4px 4px 0px 0px hsl(var(--shadow-color))",
-        "brutal-lg": "8px 8px 0px 0px hsl(var(--shadow-color))",
       },
       keyframes: {
         "accordion-down": {
