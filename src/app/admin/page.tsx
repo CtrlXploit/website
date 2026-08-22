@@ -6,6 +6,7 @@ import {
   FileText,
   Megaphone,
   Shield,
+  Trophy,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -60,6 +61,14 @@ export default function Admin() {
               >
                 <Megaphone className="w-8 h-8 group-hover:scale-110 transition-transform" />
                 <span className="font-semibold">Announcements</span>
+              </Link>
+
+              <Link
+                href="/admin/achievements"
+                className="flex flex-col items-center gap-3 bg-primary/10 text-primary p-6 rounded-xl hover:bg-primary/20 transition-colors group"
+              >
+                <Trophy className="w-8 h-8 group-hover:scale-110 transition-transform" />
+                <span className="font-semibold">Achievements</span>
               </Link>
 
               <Link
