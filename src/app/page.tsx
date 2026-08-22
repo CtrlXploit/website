@@ -55,10 +55,10 @@ export default function Home() {
               { value: "40+", label: "MEMBERS" },
               { value: "1", label: "FLAGSHIP CTF" },
             ].map((stat, i) => (
-              <TextReveal key={stat.label} delay={0.6 + (i * 0.1)} className="flex flex-col">
-                <span className="font-sans text-4xl md:text-5xl font-medium text-foreground tracking-tight">{stat.value}</span>
+              <SectionReveal key={stat.label} delay={0.6 + (i * 0.1)} className="flex flex-col items-end md:items-start">
+                <span className="font-sans text-4xl md:text-5xl font-medium text-foreground tracking-tight leading-none">{stat.value}</span>
                 <span className="font-mono text-[10px] uppercase tracking-widest text-foreground/50 mt-1">{stat.label}</span>
-              </TextReveal>
+              </SectionReveal>
             ))}
           </div>
 

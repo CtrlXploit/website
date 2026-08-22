@@ -36,22 +36,24 @@ export function Header() {
         }`}
       >
         <div className="max-w-7xl mx-auto px-6 md:px-10 h-24 flex items-start pt-8 justify-between">
-          {/* Logo */}
-          <Link
-            href="/"
-            className="flex items-center gap-3 font-mono text-base font-medium tracking-[0.1em] text-foreground hover:opacity-70 transition-opacity duration-200"
-          >
-            {/* Minimalist Icon mimicking screenshot 1 */}
-            <div className="flex flex-wrap w-[18px] h-[18px] gap-[2px]">
-              <div className="w-[8px] h-[8px] bg-foreground" />
-              <div className="w-[8px] h-[8px] bg-foreground" />
-              <div className="w-[8px] h-[8px] bg-foreground" />
-            </div>
-            INFOSEC
-          </Link>
+          
+          <div className="flex gap-12 md:gap-24">
+            {/* Logo */}
+            <Link
+              href="/"
+              className="flex items-center gap-3 font-mono text-base font-medium tracking-[0.1em] text-foreground hover:opacity-70 transition-opacity duration-200"
+            >
+              {/* Minimalist Icon mimicking screenshot 1 */}
+              <div className="flex flex-wrap w-[18px] h-[18px] gap-[2px]">
+                <div className="w-[8px] h-[8px] bg-foreground" />
+                <div className="w-[8px] h-[8px] bg-foreground" />
+                <div className="w-[8px] h-[8px] bg-foreground" />
+              </div>
+              INFOSEC
+            </Link>
 
-          {/* Desktop Nav */}
-          <nav className="hidden md:flex flex-col items-start gap-3 mt-1">
+            {/* Desktop Nav */}
+            <nav className="hidden md:flex flex-col items-start gap-3 mt-1">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -65,7 +67,8 @@ export function Header() {
                 {link.label}
               </Link>
             ))}
-          </nav>
+            </nav>
+          </div>
           
           <div className="hidden md:block">
             {/* Top Right Action icon, e.g. an arrow or login */}
