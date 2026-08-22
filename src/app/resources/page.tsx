@@ -1,14 +1,10 @@
 import { createClient } from "@/utils/supabase/server";
-import GlitchText from "@/components/GlitchText";
-// import { resources } from "@/data/resources";
+import { TextReveal } from "@/components/TextReveal";
+import { SectionReveal } from "@/components/SectionReveal";
 import { ArrowUpRightIcon } from "@heroicons/react/24/outline";
 
-// This tells Next.js to cache this page and re-fetch the data from Supabase
-// at most once every hour. Adjust the time (in seconds) as needed.
 export const revalidate = 3600;
 
-// It's good practice to define the shape of the data you're fetching.
-// This gives you type safety and autocompletion in your code.
 type Resource = {
   id: string;
   created_at: string;
@@ -18,7 +14,6 @@ type Resource = {
   link: string;
 };
 
-// Helper function to create URL-friendly slugs
 const slugify = (text: string) => {
   return text
     .toString()
@@ -48,10 +43,10 @@ export default async function Resources() {
     .order("category", { ascending: true });
 
   if (error) {
-    console.error("Error fetching members:", error);
+    console.error("Error fetching resources:", error);
     return (
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center flex flex-col items-center min-h-screen">
-        <p className="text-red-500">
+      <div className="w-full max-w-7xl mx-auto px-6 md:px-10 py-32 text-center min-h-screen">
+        <p className="text-destructive font-mono text-sm">
           Could not fetch resources. Please try again later.
         </p>
       </div>
@@ -60,24 +55,21 @@ export default async function Resources() {
 
   if (!resources || resources.length === 0) {
     return (
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center flex flex-col items-center min-h-screen">
-        <GlitchText
-          speed={1}
-          enableShadows={true}
-          enableOnHover={true}
-          className="whitespace-nowrap text-6xl md:text-7xl lg:text-8xl"
-        >
-          Resources
-        </GlitchText>
-        <p className="text-red-500 mt-8">No resources found in database.</p>
+      <div className="w-full flex flex-col pt-24">
+        <section className="max-w-7xl mx-auto px-6 md:px-10 py-16 md:py-24">
+          <TextReveal as="h1">
+            <span className="font-display text-5xl md:text-6xl italic text-foreground">
+              Resources
+            </span>
+          </TextReveal>
+          <p className="mt-6 text-muted-foreground">No resources found.</p>
+        </section>
       </div>
     );
   }
 
   // Group resources by category
-  // const groupedResources: Record<string, typeof resources> = {};
   const groupedResources: Record<string, typeof resources> = {};
-
   resources.forEach((resource) => {
     const { category } = resource;
     if (!groupedResources[category]) {
@@ -89,90 +81,103 @@ export default async function Resources() {
   const categories = Object.keys(groupedResources);
 
   return (
-    <div className="w-full max-w-7xl mx-auto my-20 flex flex-col items-center">
-      {/* Header */}
-      <header className="text-center w-full mb-20">
-        <GlitchText
-          speed={1}
-          enableShadows={true}
-          enableOnHover={true}
-          className="whitespace-nowrap text-6xl md:text-7xl lg:text-8xl"
-        >
+    <div className="w-full flex flex-col pt-24">
+      {/* Hero */}
+      <section className="max-w-7xl mx-auto px-6 md:px-10 py-16 md:py-24">
+        <TextReveal as="p" className="eyebrow mb-4">
           Resources
-        </GlitchText>
-        <p className="mt-6 text-xl text-foreground/80 max-w-3xl mx-auto leading-relaxed">
-          Curated collection of resources to get you started and help you
-          advance in the field of Information Security.
-        </p>
-      </header>
+        </TextReveal>
+        <TextReveal as="h1" delay={0.1}>
+          <span className="font-display text-5xl md:text-6xl lg:text-7xl italic text-foreground leading-[1.05]">
+            Start here, go&nbsp;anywhere.
+          </span>
+        </TextReveal>
+        <TextReveal
+          as="p"
+          delay={0.3}
+          className="mt-6 text-lg text-muted-foreground max-w-2xl leading-relaxed"
+        >
+          Curated resources to get you started and advance in information
+          security.
+        </TextReveal>
+      </section>
 
-      {/* Layout */}
-      <div className="w-full flex flex-col md:flex-row gap-12">
-        {/* Sidebar */}
-        <aside className="md:w-1/4">
-          <div className="sticky top-24 p-6 rounded-xl border border-white/10 bg-black/20 backdrop-blur-sm shadow-lg">
-            <h3 className="text-xl font-bold text-primary mb-5">Categories</h3>
-            <nav>
-              <ul className="space-y-3">
-                {categories.map((category) => (
-                  <li key={category}>
-                    <a
-                      href={`#${slugify(category)}`}
-                      className="flex items-center text-lg text-foreground/70 hover:text-primary transition-all duration-300 hover:translate-x-1"
-                    >
-                      <span className="mr-2 text-primary">#</span> {category}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          </div>
-        </aside>
-
-        {/* Main Content */}
-        <main className="md:w-3/4">
-          <div className="space-y-20">
-            {Object.entries(groupedResources).map(([category, items]) => (
-              <section
-                key={category}
-                id={slugify(category)}
-                className="scroll-mt-28"
-              >
-                <h2 className="text-3xl font-bold text-white mb-8 relative pb-4">
-                  {category}
-                  <span className="absolute left-0 bottom-0 w-20 h-1 bg-gradient-to-r from-primary to-transparent rounded-full"></span>
-                </h2>
-                <div className="space-y-8">
-                  {items.map((res) => (
-                    <a
-                      key={res.link}
-                      href={res.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="group relative block rounded-xl border border-white/10 bg-black/10 backdrop-blur-sm p-6 transition-all duration-500 hover:border-primary/40 hover:bg-primary/5 hover:shadow-lg"
-                    >
-                      <div className="flex items-start justify-between mb-3">
-                        <h3 className="text-2xl font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
-                          {res.heading}
-                        </h3>
-                        <span className="px-3 py-1 text-xs font-medium rounded-full bg-primary/10 text-primary">
-                          {res.category}
+      {/* Layout: Sidebar + Content */}
+      <section className="border-t border-border">
+        <div className="max-w-7xl mx-auto px-6 md:px-10 py-16 md:py-24 flex flex-col md:flex-row gap-12">
+          {/* Sidebar */}
+          <aside className="md:w-1/4 flex-shrink-0">
+            <div className="sticky top-24 border border-border p-5">
+              <h3 className="eyebrow mb-4">Categories</h3>
+              <nav>
+                <ul className="space-y-2">
+                  {categories.map((category) => (
+                    <li key={category}>
+                      <a
+                        href={`#${slugify(category)}`}
+                        className="flex items-center text-sm text-foreground/60 hover:text-primary transition-all duration-200 hover:translate-x-1"
+                      >
+                        <span className="mr-2 font-mono text-primary text-xs">
+                          #
                         </span>
-                      </div>
-                      <p className="text-md text-foreground/70 mb-4 leading-relaxed">
-                        {res.description}
-                      </p>
-                      <span className="flex items-center text-primary group-hover:text-white transition-colors duration-300 text-sm">
-                        Learn More <ArrowUpRightIcon className="ml-1 w-4 h-4" />
-                      </span>
-                    </a>
+                        {category}
+                      </a>
+                    </li>
                   ))}
-                </div>
-              </section>
-            ))}
-          </div>
-        </main>
-      </div>
+                </ul>
+              </nav>
+            </div>
+          </aside>
+
+          {/* Main Content */}
+          <main className="md:w-3/4">
+            <div className="space-y-16">
+              {Object.entries(groupedResources).map(
+                ([category, items], groupIndex) => (
+                  <SectionReveal
+                    key={category}
+                    delay={groupIndex * 0.1}
+                  >
+                    <section
+                      id={slugify(category)}
+                      className="scroll-mt-28"
+                    >
+                      <h2 className="font-display text-2xl md:text-3xl italic text-foreground mb-1">
+                        {category}
+                      </h2>
+                      <div className="w-16 h-px bg-primary mb-8" />
+
+                      <div className="space-y-0 border border-border">
+                        {items.map((res) => (
+                          <a
+                            key={res.link}
+                            href={res.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="group block px-5 py-4 border-b border-border last:border-b-0 hover:bg-[hsl(var(--surface))] transition-colors duration-150"
+                          >
+                            <div className="flex items-start justify-between gap-4">
+                              <div className="flex-1">
+                                <h3 className="font-sans text-base font-medium text-foreground group-hover:text-primary transition-colors duration-200">
+                                  {res.heading}
+                                </h3>
+                                <p className="mt-1 text-sm text-muted-foreground leading-relaxed">
+                                  {res.description}
+                                </p>
+                              </div>
+                              <ArrowUpRightIcon className="w-4 h-4 text-muted-foreground group-hover:text-primary flex-shrink-0 mt-1 transition-colors duration-200" />
+                            </div>
+                          </a>
+                        ))}
+                      </div>
+                    </section>
+                  </SectionReveal>
+                )
+              )}
+            </div>
+          </main>
+        </div>
+      </section>
     </div>
   );
 }

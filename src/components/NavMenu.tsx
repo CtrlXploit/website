@@ -9,17 +9,17 @@ interface navProps {
 
 const mainNav = [
   { label: "About", href: "/about" },
-  { label: <>Join&nbsp;&nbsp;&nbsp;Us</>, href: "/join-us" },
   { label: "Events", href: "/events" },
-  { label: "Announcements", href: "/announcements" },
+  { label: "Blog", href: "/blog" },
+  { label: "Join Us", href: "/join-us" },
 ];
 
 const secondaryNav = [
   { label: "Projects", href: "/projects" },
   { label: "Wargames", href: "/wargames" },
-  { label: "Blog", href: "/blog" },
   { label: "Resources", href: "/resources" },
   { label: "Achievements", href: "/achievements" },
+  { label: "Announcements", href: "/announcements" },
 ];
 
 export function NavMenu({ onClose }: navProps) {
@@ -39,61 +39,41 @@ export function NavMenu({ onClose }: navProps) {
   }, [onClose]);
 
   return (
-    <div
-      className="fixed inset-0 z-50 animate-in fade-in-0 backdrop-blur-lg"
-      style={
-        {
-          "--bg-color": "hsl(var(--background))",
-          "--text-color-primary": "hsl(var(--foreground))",
-          "--text-color-secondary": "hsl(var(--muted-foreground))",
-          "--accent-color": "hsl(var(--primary))",
-          // "--border-color": "hsl(var(--border))",
-          "--border-color": "hsl(var(--muted-foreground) / 0.5)",
-          "--font-main-right":
-            '"Hubot Sans", "Mona Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif',
-          "--font-main-left":
-            '"Blimone", "Hubot Sans", "Mona Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
-        } as React.CSSProperties
-      }
-    >
-      <div className="hidden md:block absolute top-0 left-10 h-full w-px bg-[var(--border-color)] z-[2]" />
-      <div className="h-full w-full grid grid-rows-[auto_1fr_auto] text-[var(--text-color-primary)] bg-[var(--bg-color)]/80 backdrop-blur-xl">
-        <header className="grid-cols-full flex justify-between items-center py-5 px-10 md:px-16 border-b border-[var(--border-color)]">
+    <div className="fixed inset-0 z-50 bg-background/95 backdrop-blur-xl animate-fade-in">
+      <div className="h-full w-full grid grid-rows-[auto_1fr_auto] text-foreground">
+        {/* Header */}
+        <header className="flex justify-between items-center py-5 px-6 md:px-10 border-b border-border">
           <Link
             href="/"
             onClick={onClose}
-            className="text-lg sm:text-xl relative pl-4 font-medium transition-transform duration-300 ease-in-out hover:scale-105 group"
-            style={{ fontFamily: "var(--font-main-right)" }}
+            className="font-mono text-sm font-medium tracking-[0.15em] uppercase hover:text-primary transition-colors duration-200"
           >
-            Infosec
+            INFOSEC
           </Link>
           <button
             onClick={onClose}
-            className="text-2xl sm:text-3xl md:text-4xl font-thin text-[var(--text-color-secondary)] transition-colors duration-300 ease-in-out hover:text-[var(--accent-color)] hover:rotate-90"
+            className="text-2xl font-light text-muted-foreground transition-all duration-300 hover:text-primary hover:rotate-90"
+            aria-label="Close menu"
           >
-            X
+            ✕
           </button>
         </header>
 
-        <div className="flex-1 grid md:grid-cols-[1.2fr_1fr] grid-cols-1 overflow-y-auto relative">
-          <div className="hidden md:block absolute top-[6.5rem] left-0 right-0 h-[1px] bg-[var(--border-color)] z-10"></div>
-
-          <main className="md:border-r border-b md:border-b-0 border-[var(--border-color)] py-14 px-10 md:px-16 flex flex-col transition-colors duration-300">
-            <h2 className="text-xs font-medium text-[var(--text-color-secondary)] tracking-[0.12em] uppercase mb-16 relative after:content-[''] after:absolute after:bottom-[-1rem] after:left-0 after:w-[50px] after:h-[2px] after:bg-[var(--accent-color)] hover:after:w-[100px] after:transition-all after:duration-300">
-              Main
+        {/* Navigation */}
+        <div className="flex-1 grid md:grid-cols-[1.2fr_1fr] grid-cols-1 overflow-y-auto">
+          {/* Main Nav */}
+          <main className="md:border-r border-b md:border-b-0 border-border py-14 px-6 md:px-10 flex flex-col">
+            <h2 className="eyebrow mb-12 relative after:content-[''] after:absolute after:bottom-[-0.75rem] after:left-0 after:w-[40px] after:h-[1px] after:bg-primary">
+              Navigate
             </h2>
             <nav>
               <ul className="group">
                 {mainNav.map((item) => (
-                  <li key={item.label}>
+                  <li key={typeof item.label === 'string' ? item.label : 'nav'}>
                     <Link
                       href={item.href}
                       onClick={onClose}
-                      className="inline-block relative mb-5 pb-2 text-[32px] sm:text-[40px] md:text-[52px] font-normal uppercase tracking-tighter leading-tight text-[var(--text-color-primary)] opacity-90 transition-all duration-300 group-hover:opacity-30 hover:!opacity-100 after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 after:bg-[var(--accent-color)] after:transition-all after:duration-300 hover:after:w-full"
-                      style={{
-                        fontFamily: "var(--font-main-left)",
-                        fontFeatureSettings: '"liga", "ss02"',
-                      }}
+                      className="inline-block relative mb-4 pb-2 text-[32px] sm:text-[40px] md:text-[52px] font-display italic leading-tight text-foreground opacity-90 transition-all duration-300 group-hover:opacity-30 hover:!opacity-100 after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full"
                     >
                       {item.label}
                     </Link>
@@ -102,23 +82,23 @@ export function NavMenu({ onClose }: navProps) {
               </ul>
             </nav>
           </main>
-          <aside className="py-14 px-10 md:px-16 transition-colors duration-300">
-            <header className="flex justify-between items-center mb-8">
-              <h2 className="text-xs font-medium text-[var(--text-color-secondary)] tracking-[0.12em] uppercase relative after:content-[''] after:absolute after:bottom-[-1rem] after:left-0 after:w-[50px] after:h-[2px] after:bg-[var(--accent-color)] hover:after:w-[100px] after:transition-all after:duration-300">
-                More
-              </h2>
-            </header>
+
+          {/* Secondary Nav */}
+          <aside className="py-14 px-6 md:px-10">
+            <h2 className="eyebrow mb-8 relative after:content-[''] after:absolute after:bottom-[-0.75rem] after:left-0 after:w-[40px] after:h-[1px] after:bg-primary">
+              More
+            </h2>
             <nav>
-              <ul className="relative group">
+              <ul className="group">
                 {secondaryNav.map((topic) => (
                   <li
                     key={topic.label}
-                    className="relative after:content-[''] after:absolute after:bottom-0 after:left-[-2.5rem] md:after:left-[-4rem] after:right-[-2.5rem] md:after:right-[-4rem] after:h-[1px] after:bg-[var(--border-color)] last:after:hidden"
+                    className="border-b border-border last:border-b-0"
                   >
                     <Link
                       href={topic.href}
                       onClick={onClose}
-                      className="block py-7 text-lg sm:text-xl md:text-2xl font-normal text-[var(--text-color-primary)] opacity-90 transition-all duration-300 group-hover:opacity-30 hover:!opacity-100"
+                      className="block py-5 text-lg sm:text-xl md:text-2xl font-sans text-foreground opacity-90 transition-all duration-300 group-hover:opacity-30 hover:!opacity-100 hover:text-primary"
                     >
                       {topic.label}
                     </Link>
@@ -129,7 +109,12 @@ export function NavMenu({ onClose }: navProps) {
           </aside>
         </div>
 
-        <footer className="flex items-center gap-5 py-5 px-10 md:px-16 border-t border-[var(--border-color)] text-xs tracking-[0.12em] text-[var(--text-color-secondary)] font-medium uppercase" />
+        {/* Footer */}
+        <footer className="flex items-center gap-5 py-4 px-6 md:px-10 border-t border-border">
+          <span className="font-mono text-xs text-muted-foreground tracking-wider">
+            Cyberlabs, IIT (ISM) Dhanbad
+          </span>
+        </footer>
       </div>
     </div>
   );

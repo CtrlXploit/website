@@ -4,56 +4,60 @@
 
 @layer base {
   :root {
-    --background: 0 0% 0%;
-    --foreground: 0 0% 100%;
-    --card: 0 0% 4%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 4%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 235 85% 64%;
-    --primary-foreground: 0 0% 0%;
-    --secondary: 0 0% 8%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 8%;
-    --muted-foreground: 0 0% 65%;
-    --accent: 0 0% 8%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 8%;
-    --input: 0 0% 8%;
-    --ring: 235 85% 64%;
-    --radius: 0.375rem;
+    /* ── Dark Stealth Palette ── */
+    --void: 0 0% 5%;           /* #0D0D0D — near black void */
+    --surface: 0 0% 10%;       /* #1A1A1A — slightly lighter for cards */
+    --surface-2: 0 0% 15%;     /* #262626 */
+    --ink: 0 0% 100%;          /* #FFFFFF — pure white text */
+    --ink-muted: 0 0% 60%;     /* #999999 — light gray text */
+    --border-color: 0 0% 15%;  /* #262626 — subtle borders */
+    --accent: 0 0% 100%;       /* White accent */
+    --accent-dim: 0 0% 80%;
 
-    --bg-color: #1b1b1d;
-    --text-color-primary: #ffffff;
-    --text-color-secondary: #b9bbbe;
-    --accent-color: #5865f2;
-    --border-color: #202225;
+    --background: var(--void);
+    --foreground: var(--ink);
+    --card: var(--surface);
+    --card-foreground: var(--ink);
+    --popover: var(--surface);
+    --popover-foreground: var(--ink);
+    --primary: 0 0% 100%;      /* White primary elements */
+    --primary-foreground: 0 0% 0%; /* Black text on primary */
+    --secondary: var(--surface-2);
+    --secondary-foreground: var(--ink);
+    --muted: 0 0% 15%;
+    --muted-foreground: var(--ink-muted);
+    --accent-ui: var(--surface-2);
+    --accent-foreground: var(--ink);
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 0 0% 98%;
+    --border: var(--border-color);
+    --input: var(--border-color);
+    --ring: var(--ink);
+    --radius: 0px;
+
+    color-scheme: dark;
   }
 
   .dark {
-    --background: 240, 5%, 11%;
-    --foreground: 0 0% 100%;
-    --card: 0 0% 4%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 4%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0,
-      66%,
-      55%;
-    --primary-foreground: 0 0% 0%;
-    --secondary: 0 0% 8%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 8%;
-    --muted-foreground: 0 0% 65%;
-    --accent: 0 0% 8%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 8%;
-    --input: 0 0% 8%;
-    --ring: 235 85% 64%;
+    /* Inherit exactly from root to enforce dark mode always */
+    --background: var(--void);
+    --foreground: var(--ink);
+    --card: var(--surface);
+    --card-foreground: var(--ink);
+    --popover: var(--surface);
+    --popover-foreground: var(--ink);
+    --primary: 0 0% 100%;      
+    --primary-foreground: 0 0% 0%; 
+    --secondary: var(--surface-2);
+    --secondary-foreground: var(--ink);
+    --muted: 0 0% 15%;
+    --muted-foreground: var(--ink-muted);
+    --accent-ui: var(--surface-2);
+    --accent-foreground: var(--ink);
+    --border: var(--border-color);
+    --input: var(--border-color);
+    --ring: var(--ink);
+    color-scheme: dark;
   }
 }
 
@@ -62,64 +66,58 @@
     @apply border-border;
   }
 
+  html {
+    background: hsl(var(--void));
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--ink-muted)) hsl(var(--void));
+  }
+
   body {
     @apply bg-background text-foreground;
-    background-color: 0, 14%, 10%;
-    background-image:
-      linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-    background-size: 40px 40px;
-    background-attachment: fixed;
     min-height: 100vh;
   }
 
-  /* Discord-inspired scrollbar */
+  /* Minimal Scrollbar */
   ::-webkit-scrollbar {
-    width: 8px;
+    width: 6px;
+    height: 6px;
   }
 
   ::-webkit-scrollbar-track {
-    background: #202225;
+    background: transparent;
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #5865f2;
+    background: hsl(var(--ink-muted) / 0.3);
     border-radius: 4px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: #4752c4;
+    background: hsl(var(--ink-muted) / 0.8);
   }
 
-  /* Full page grid overlay */
-  html {
-    background: var(--bg-color);
-    background-image:
-      linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-    background-size: 40px 40px;
-    background-attachment: fixed;
+  ::selection {
+    background: hsl(var(--ink) / 0.2);
+    color: hsl(var(--ink));
   }
+}
 
-  /* Enhanced grid pattern utility class */
-  .grid-pattern {
-    background-image:
-      linear-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.15) 1px, transparent 1px);
-    background-size: 20px 20px;
-  }
-
-  .grid-pattern-large {
-    background-image:
-      linear-gradient(rgba(255, 255, 255, 0.1) 2px, transparent 2px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.1) 2px, transparent 2px);
-    background-size: 80px 80px;
-  }
-
+@layer utilities {
   .line-clamp-3 {
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
+  }
+
+  /* Hairline separator */
+  .hairline {
+    height: 1px;
+    background: hsl(var(--border-color));
+  }
+
+  /* Eyebrow label — monospace, small, spaced */
+  .eyebrow {
+    @apply font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground;
   }
 }
