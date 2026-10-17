@@ -1,4 +1,4 @@
-import { createClient } from "@/utils/supabase/server";
+import { getPublicSupabase } from "@/utils/supabase/public";
 import {
   CalendarIcon,
   UserIcon,
@@ -10,7 +10,22 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import MarkdownRenderer from "@/components/MarkdownRenderer";
 
-export const revalidate = 0;
+// Cache for 24 hours, refreshed on-demand when admin updates blog
+export const revalidate = 86400;
+
+export async function generateStaticParams() {
+  const supabase = getPublicSupabase();
+  if (!supabase) return [];
+
+  const { data: blogs } = await supabase
+    .from("blogs")
+    .select("slug")
+    .eq("published", true);
+
+  return (blogs || [])
+    .filter((b) => b.slug)
+    .map((b) => ({ slug: b.slug as string }));
+}
 
 type Blog = {
   id: string;
@@ -40,9 +55,11 @@ export default async function BlogDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const supabase = await createClient();
+  const supabase = getPublicSupabase();
 
-  console.log("Fetching blog with slug:", slug); // Debug log
+  if (!supabase) {
+    notFound();
+  }
 
   const { data: blog, error } = await supabase
     .from("blogs")
@@ -51,11 +68,23 @@ export default async function BlogDetailPage({
     .eq("published", true)
     .maybeSingle();
 
-  console.log("Blog query result:", { blog, error }); // Debug log
-
   if (error || !blog) {
-    console.log("Blog not found, calling notFound()"); // Debug log
     notFound();
+  }
+
+  // Pre-fetch markdown on the server so it arrives pre-rendered with zero client delay
+  let initialMarkdown: string | undefined = undefined;
+  if (blog.type === "markdown" && blog.content_url) {
+    try {
+      const res = await fetch(blog.content_url, {
+        next: { revalidate: 86400 },
+      });
+      if (res.ok) {
+        initialMarkdown = await res.text();
+      }
+    } catch (err) {
+      console.warn("Failed to prefetch markdown content:", err);
+    }
   }
 
   return (
@@ -125,7 +154,7 @@ export default async function BlogDetailPage({
         {/* Tags */}
         {blog.tags && blog.tags.length > 0 && (
           <div className="flex flex-wrap gap-2 mt-4">
-            {blog.tags.map((tag, index) => (
+            {blog.tags.map((tag: string, index: number) => (
               <span
                 key={index}
                 className="px-3 py-1 text-sm rounded-full bg-primary/10 text-primary border border-primary/20"
@@ -142,7 +171,10 @@ export default async function BlogDetailPage({
         <div className="rounded-xl border border-white/10 bg-black/5 backdrop-blur-sm overflow-hidden">
           {blog.type === "markdown" ? (
             <div className="p-2 sm:p-6 lg:p-8">
-              <MarkdownRenderer contentUrl={blog.content_url} />
+              <MarkdownRenderer
+                contentUrl={blog.content_url}
+                initialContent={initialMarkdown}
+              />
             </div>
           ) : (
             <div className="p-4 sm:p-6 lg:p-8 text-center">

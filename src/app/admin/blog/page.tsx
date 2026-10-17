@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import GlitchText from "@/components/GlitchText";
 import { createClient } from "@/utils/supabase/client";
+import { revalidatePage } from "@/app/actions/revalidate";
 
 export default function AdminBlogsPage() {
   const [title, setTitle] = useState("");
@@ -117,6 +118,11 @@ export default function AdminBlogsPage() {
       setContentUrl("");
       setTags("");
       setPublished(true);
+
+      await revalidatePage("/blog");
+      if (slug) {
+        await revalidatePage(`/blog/${slug}`);
+      }
     } catch (error) {
       setMessage({
         type: "error",

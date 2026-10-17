@@ -5,6 +5,7 @@ import GlitchText from "@/components/GlitchText";
 import { createClient } from "@/utils/supabase/client";
 import { format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
+import { revalidatePage } from "@/app/actions/revalidate";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -107,6 +108,7 @@ export default function AnnouncementsPage() {
       setDescription("");
       setImageUrl("");
       setScheduledAt(getInitialRoundedDate());
+      await revalidatePage("/announcements");
     } catch (error) {
       setMessage({
         type: "error",

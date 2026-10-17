@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { Trash, Edit, Plus, Save, X } from "lucide-react";
+import { revalidatePage } from "@/app/actions/revalidate";
 
 type Achievement = {
   id: number;
@@ -61,6 +62,7 @@ export default function AchievementList({
       setNewResult("");
       setNewRank("Special");
       setNewImgUrl("");
+      await revalidatePage("/achievements");
     }
     setLoading(false);
   };
@@ -76,6 +78,7 @@ export default function AchievementList({
         alert(`Failed to delete: ${error.message}. Please check your Supabase RLS policies.`);
       } else {
         setAchievements((prev) => prev.filter((a) => a.id !== id));
+        await revalidatePage("/achievements");
       }
       setLoading(false);
     }
@@ -144,6 +147,7 @@ export default function AchievementList({
               if (!error && data) {
                 setAchievements((prev) => prev.map((a) => (a.id === data.id ? data : a)));
                 setIsEditing(false);
+                await revalidatePage("/achievements");
               }
               setLoading(false);
             };

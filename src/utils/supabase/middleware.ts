@@ -46,6 +46,10 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
+  if (user && request.nextUrl.pathname === "/login") {
+    return NextResponse.redirect(new URL("/admin", request.url));
+  }
+
   if (user) {
     const { data: profile } = await supabase
       .from("profiles")

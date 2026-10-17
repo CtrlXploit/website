@@ -1,10 +1,8 @@
-"use client";
-
-import { useState, useEffect } from "react";
-import { createClient } from "@/utils/supabase/client";
+import { getPublicSupabase } from "@/utils/supabase/public";
 import GlitchText from "@/components/GlitchText";
 import { ArrowUpRightIcon, CodeBracketIcon } from "@heroicons/react/24/outline";
-// import Image from "next/image";
+
+export const revalidate = 86400;
 
 type Project = {
   id: number;
@@ -16,41 +14,29 @@ type Project = {
   technologies: string[];
 };
 
-export default function Projects() {
-  const supabase = createClient();
-  const [projects, setProjects] = useState<Project[] | null>(null);
-  const [error, setError] = useState<string | null>(null);
+export default async function Projects() {
+  const supabase = getPublicSupabase();
+  let projects: Project[] = [];
+  let error: string | null = null;
 
-  // Fetch projects on mount
-  useEffect(() => {
-    const fetchProjects = async () => {
-      try {
-        const { data, error } = await supabase
-          .from("projects")
-          .select("*")
-          .order("id", { ascending: true });
-        if (error) throw error;
-        setProjects(data || []);
-      } catch (err: any) {
-        console.error("Error fetching projects:", err);
-        setError("Could not fetch projects. Please try again later.");
-      }
-    };
-    fetchProjects();
-  }, [supabase]);
+  if (supabase) {
+    const { data, error: fetchError } = await supabase
+      .from("projects")
+      .select("*")
+      .order("id", { ascending: true });
+
+    if (fetchError) {
+      console.error("Error fetching projects:", fetchError);
+      error = "Could not fetch projects. Please try again later.";
+    } else {
+      projects = data || [];
+    }
+  }
 
   if (error) {
     return (
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center flex flex-col items-center min-h-screen">
         <p className="text-red-500">{error}</p>
-      </div>
-    );
-  }
-
-  if (!projects) {
-    return (
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center flex flex-col items-center min-h-screen">
-        <p>Loading projects...</p>
       </div>
     );
   }
@@ -101,7 +87,8 @@ export default function Projects() {
                 <img
                   src={project.image_url}
                   alt={project.name}
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
               </div>

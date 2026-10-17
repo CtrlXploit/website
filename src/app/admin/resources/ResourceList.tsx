@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { Trash, Edit, Plus, Save, X, ExternalLink } from "lucide-react";
+import { revalidatePage } from "@/app/actions/revalidate";
 
 type Resource = {
   id: string;
@@ -50,6 +51,7 @@ export default function ResourceList({
       setNewDescription("");
       setNewCategory(categories[0]);
       setNewLink("");
+      await revalidatePage("/resources");
     }
     setLoading(false);
   };
@@ -58,7 +60,10 @@ export default function ResourceList({
   const removeResource = async (id: string) => {
     setLoading(true);
     const { error } = await supabase.from("resources").delete().eq("id", id);
-    if (!error) setResources((prev) => prev.filter((r) => r.id !== id));
+    if (!error) {
+      setResources((prev) => prev.filter((r) => r.id !== id));
+      await revalidatePage("/resources");
+    }
     setLoading(false);
   };
 
@@ -169,6 +174,7 @@ export default function ResourceList({
                   prev.map((r) => (r.id === data.id ? data : r))
                 );
                 setIsEditing(false);
+                await revalidatePage("/resources");
               }
               setLoading(false);
             };

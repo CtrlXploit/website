@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { Trash, Edit, Plus, Save, X, ExternalLink } from "lucide-react";
+import { revalidatePage } from "@/app/actions/revalidate";
 
 type Project = {
   id: number;
@@ -59,6 +60,7 @@ export default function ProjectList({
       setNewGithubUrl("");
       setNewLiveDemo("");
       setNewTechnologies("");
+      await revalidatePage("/projects");
     }
     setLoading(false);
   };
@@ -70,7 +72,8 @@ export default function ProjectList({
       setLoading(true);
       const { error } = await supabase.from("projects").delete().eq("id", id);
       if (!error) {
-          setProjects((prev) => prev.filter((p) => p.id !== id));
+        setProjects((prev) => prev.filter((p) => p.id !== id));
+        await revalidatePage("/projects");
       }
       setLoading(false);
     }
@@ -135,6 +138,7 @@ export default function ProjectList({
               if (!error && data) {
                 setProjects((prev) => prev.map((p) => (p.id === data.id ? data : p)));
                 setIsEditing(false);
+                await revalidatePage("/projects");
               }
               setLoading(false);
             };
