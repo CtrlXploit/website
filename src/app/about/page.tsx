@@ -1,15 +1,10 @@
-// app/about/page.tsx
-
-import { createClient } from "@/utils/supabase/server";
+import { getPublicSupabase } from "@/utils/supabase/public";
 import GlitchText from "@/components/GlitchText";
 import { Trophy, Zap, Users, Crown } from "lucide-react";
 
-// This tells Next.js to cache this page and re-fetch the data from Supabase
-// at most once every hour. Adjust the time (in seconds) as needed.
-export const revalidate = 172800;
+// Cache for 24 hours, refreshed on-demand when admin updates members
+export const revalidate = 86400;
 
-// It's good practice to define the shape of the data you're fetching.
-// This gives you type safety and autocompletion in your code.
 type Level = {
   id: string;
   name: string;
@@ -22,8 +17,13 @@ type Member = {
   id: string;
   username: string;
   created_at: string;
-  levels: Level | null; // The 'levels' property will contain the joined data
+  levels: Level | Level[] | null;
 };
+
+function getLevelInfo(levels: Level | Level[] | null | undefined): Level | null {
+  if (!levels) return null;
+  return Array.isArray(levels) ? levels[0] || null : levels;
+}
 
 // Icon mapping for database icon names
 const iconMap: Record<string, JSX.Element> = {
@@ -35,54 +35,49 @@ const iconMap: Record<string, JSX.Element> = {
 
 // Function to get icon component from database string
 function getIcon(iconName: string | undefined): JSX.Element {
-  if (!iconName) return <Users className="w-8 h-8" />; // Default icon
+  if (!iconName) return <Users className="w-8 h-8" />;
 
-  // Remove any emoji or special characters and convert to lowercase
   const cleanIconName = iconName.toLowerCase().replace(/[^\w]/g, "");
-
   return iconMap[cleanIconName] || <Users className="w-8 h-8" />;
 }
 
 export default async function AboutPage() {
-  // createClient() is now synchronous and gets cookies automatically
-  // on the server, so you can call it directly.
-  const supabase = await createClient();
+  const supabase = getPublicSupabase();
+  let members: any[] = [];
 
-  // Fetch the members data.
-  // The 'select' query with 'levels(...)' tells Supabase to perform a JOIN
-  // and include the details from the 'levels' table for each member.
-  const { data: members, error } = await supabase
-    .from("members")
-    .select(
-      `
-      id,
-      username,
-      created_at,
-      levels (
+  if (supabase) {
+    const { data, error } = await supabase
+      .from("members")
+      .select(
+        `
         id,
-        name,
-        color,
-        border_color,
-        icon
+        username,
+        created_at,
+        levels (
+          id,
+          name,
+          color,
+          border_color,
+          icon
+        )
+      `
       )
-    `
-    )
-    .order("created_at", { ascending: true });
+      .order("created_at", { ascending: true });
 
-  // Always handle potential errors when fetching data.
-  if (error) {
-    console.error("Error fetching members:", error);
-    return (
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center flex flex-col items-center min-h-screen">
-        <p className="text-red-500">
-          Could not fetch team members. Please try again later.
-        </p>
-      </div>
-    );
+    if (error) {
+      console.error("Error fetching members:", error);
+      return (
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center flex flex-col items-center min-h-screen">
+          <p className="text-red-500">
+            Could not fetch team members. Please try again later.
+          </p>
+        </div>
+      );
+    }
+    members = data || [];
   }
 
-  // If there are no members, display a helpful message.
-  if (!members || members.length === 0) {
+  if (members.length === 0) {
     return (
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center flex flex-col items-center min-h-screen">
         <GlitchText
@@ -100,10 +95,11 @@ export default async function AboutPage() {
 
   // Group members by their level
   const membersByLevel = members.reduce((acc, member) => {
-    const levelName = member.levels?.name || "Member";
+    const levelInfo = getLevelInfo(member.levels);
+    const levelName = levelInfo?.name || "Member";
     if (!acc[levelName]) {
       acc[levelName] = {
-        levelInfo: member.levels,
+        levelInfo,
         members: [],
       };
     }

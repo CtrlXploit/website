@@ -1,4 +1,4 @@
-import { createClient } from "@/utils/supabase/server";
+import { getPublicSupabase } from "@/utils/supabase/public";
 import GlitchText from "@/components/GlitchText";
 import {
   CalendarIcon,
@@ -8,9 +8,8 @@ import {
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 
-// This tells Next.js to cache this page and re-fetch the data from Supabase
-// at most once every hour. Adjust the time (in seconds) as needed.
-export const revalidate = 172800;
+// Cache for 24 hours, refreshed on-demand when admin creates/edits a blog
+export const revalidate = 86400;
 
 // Define the shape of the blog data
 type Blog = {
@@ -36,36 +35,40 @@ const formatDate = (dateString: string) => {
 };
 
 export default async function BlogPage() {
-  const supabase = await createClient();
+  const supabase = getPublicSupabase();
+  let blogs: Blog[] = [];
 
-  const { data: blogs, error } = await supabase
-    .from("blogs")
-    .select(
-      `
-      id,
-      created_at,
-      title,
-      description,
-      type,
-      content_url,
-      author,
-      tags,
-      slug,
-      created_by
-      `
-    )
-    .eq("published", true)
-    .order("created_at", { ascending: false });
+  if (supabase) {
+    const { data, error } = await supabase
+      .from("blogs")
+      .select(
+        `
+        id,
+        created_at,
+        title,
+        description,
+        type,
+        content_url,
+        author,
+        tags,
+        slug,
+        created_by
+        `
+      )
+      .eq("published", true)
+      .order("created_at", { ascending: false });
 
-  if (error) {
-    console.error("Error fetching blogs:", error);
-    return (
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center flex flex-col items-center min-h-screen">
-        <p className="text-red-500">
-          Could not fetch blogs. Please try again later.
-        </p>
-      </div>
-    );
+    if (error) {
+      console.error("Error fetching blogs:", error);
+      return (
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center flex flex-col items-center min-h-screen">
+          <p className="text-red-500">
+            Could not fetch blogs. Please try again later.
+          </p>
+        </div>
+      );
+    }
+    blogs = data || [];
   }
 
   if (!blogs || blogs.length === 0) {
@@ -135,7 +138,7 @@ export default async function BlogPage() {
                       </span>
                       {blog.tags && blog.tags.length > 0 && (
                         <div className="flex flex-wrap gap-1">
-                          {blog.tags.slice(0, 3).map((tag, index) => (
+                          {blog.tags.slice(0, 3).map((tag: string, index: number) => (
                             <span
                               key={index}
                               className="px-2 py-0.5 text-xs rounded-full bg-primary/10 text-primary border border-primary/20"

@@ -1,11 +1,9 @@
-import { createClient } from "@/utils/supabase/server";
+import { getPublicSupabase } from "@/utils/supabase/public";
 import GlitchText from "@/components/GlitchText";
-// import { resources } from "@/data/resources";
 import { ArrowUpRightIcon } from "@heroicons/react/24/outline";
 
-// This tells Next.js to cache this page and re-fetch the data from Supabase
-// at most once every hour. Adjust the time (in seconds) as needed.
-export const revalidate = 3600;
+// Cache for 24 hours, refreshed on-demand when admin updates resources
+export const revalidate = 86400;
 
 // It's good practice to define the shape of the data you're fetching.
 // This gives you type safety and autocompletion in your code.
@@ -31,31 +29,35 @@ const slugify = (text: string) => {
 };
 
 export default async function Resources() {
-  const supabase = await createClient();
+  const supabase = getPublicSupabase();
+  let resources: Resource[] = [];
 
-  const { data: resources, error } = await supabase
-    .from("resources")
-    .select(
-      `
-      id,
-      created_at,
-      heading,
-      description,
-      link,
-      category
-      `
-    )
-    .order("category", { ascending: true });
+  if (supabase) {
+    const { data, error } = await supabase
+      .from("resources")
+      .select(
+        `
+        id,
+        created_at,
+        heading,
+        description,
+        link,
+        category
+        `
+      )
+      .order("category", { ascending: true });
 
-  if (error) {
-    console.error("Error fetching members:", error);
-    return (
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center flex flex-col items-center min-h-screen">
-        <p className="text-red-500">
-          Could not fetch resources. Please try again later.
-        </p>
-      </div>
-    );
+    if (error) {
+      console.error("Error fetching resources:", error);
+      return (
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center flex flex-col items-center min-h-screen">
+          <p className="text-red-500">
+            Could not fetch resources. Please try again later.
+          </p>
+        </div>
+      );
+    }
+    resources = data || [];
   }
 
   if (!resources || resources.length === 0) {

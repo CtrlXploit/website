@@ -1,10 +1,7 @@
-"use client";
-
-import { useState, useEffect } from "react";
-import { createClient } from "@/utils/supabase/client";
+import { getPublicSupabase } from "@/utils/supabase/public";
 import GlitchText from "@/components/GlitchText";
-import { ArrowUpRightIcon, CodeBracketIcon } from "@heroicons/react/24/outline";
-// import Image from "next/image";
+
+export const revalidate = 86400;
 
 type Achievement = {
   id: number;
@@ -16,50 +13,44 @@ type Achievement = {
 };
 
 const getBadgeClasses = (rank?: string) => {
-  const base = "px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider shrink-0 border";
+  const base =
+    "px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider shrink-0 border";
   switch (rank) {
-    case "1st": return `${base} bg-amber-400/20 text-amber-400 border-amber-400/30`;
-    case "2nd": return `${base} bg-blue-400/20 text-blue-400 border-blue-400/30`;
-    case "3rd": return `${base} bg-orange-500/20 text-orange-500 border-orange-500/30`;
-    case "Special": default: return `${base} bg-emerald-400/20 text-emerald-400 border-emerald-400/30`;
+    case "1st":
+      return `${base} bg-amber-400/20 text-amber-400 border-amber-400/30`;
+    case "2nd":
+      return `${base} bg-blue-400/20 text-blue-400 border-blue-400/30`;
+    case "3rd":
+      return `${base} bg-orange-500/20 text-orange-500 border-orange-500/30`;
+    case "Special":
+    default:
+      return `${base} bg-emerald-400/20 text-emerald-400 border-emerald-400/30`;
   }
 };
 
-export default function Achievments() {
-  const supabase = createClient();
-  const [achievements, setAchievements] = useState<Achievement[] | null>(null);
-  const [error, setError] = useState<string | null>(null);
+export default async function AchievementsPage() {
+  const supabase = getPublicSupabase();
+  let achievements: Achievement[] = [];
+  let error: string | null = null;
 
-  // Fetch projects on mount
-  useEffect(() => {
-    const fetchAchievements = async () => {
-      try {
-        const { data, error } = await supabase
-          .from("achievements")
-          .select("*")
-          .order("id", { ascending: true });
-        if (error) throw error;
-        setAchievements(data || []);
-      } catch (err: any) {
-        console.error("Error fetching achievements:", err);
-        setError("Could not fetch achievements. Please try again later.");
-      }
-    };
-    fetchAchievements();
-  }, [supabase]);
+  if (supabase) {
+    const { data, error: fetchError } = await supabase
+      .from("achievements")
+      .select("*")
+      .order("id", { ascending: true });
+
+    if (fetchError) {
+      console.error("Error fetching achievements:", fetchError);
+      error = "Could not fetch achievements. Please try again later.";
+    } else {
+      achievements = data || [];
+    }
+  }
 
   if (error) {
     return (
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center flex flex-col items-center min-h-screen">
         <p className="text-red-500">{error}</p>
-      </div>
-    );
-  }
-
-  if (!achievements) {
-    return (
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center flex flex-col items-center min-h-screen">
-        <p>Loading achievements...</p>
       </div>
     );
   }
@@ -79,9 +70,6 @@ export default function Achievments() {
       </div>
     );
   }
-
-  // Add this right before your final return statement
-  console.log("Supabase Data:", achievements);
 
   return (
     <div className="w-full max-w-7xl mx-auto my-20 px-4 sm:px-6 lg:px-8 flex flex-col items-center">
@@ -108,17 +96,21 @@ export default function Achievments() {
               key={achievement.id}
               className="group relative rounded-xl border border-white/10 bg-black/10 backdrop-blur-sm overflow-hidden transition-all duration-500 hover:border-primary/40 hover:bg-primary/5 hover:shadow-lg hover:-translate-y-2"
             >
-              {/* Project Image */}
+              {/* Achievement Image */}
               <div className="relative h-48 overflow-hidden">
                 <img
-                  src={achievement.img_url || "https://via.placeholder.com/400x200?text=No+Image"}
+                  src={
+                    achievement.img_url ||
+                    "https://via.placeholder.com/400x200?text=No+Image"
+                  }
                   alt={achievement.title}
                   className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
               </div>
 
-              {/* Project Content */}
+              {/* Achievement Content */}
               <div className="p-6">
                 <div className="mb-4">
                   <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-2 mb-2">

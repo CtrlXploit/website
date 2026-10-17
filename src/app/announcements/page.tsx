@@ -1,9 +1,9 @@
-import { createClient } from "@/utils/supabase/server";
+import { getPublicSupabase } from "@/utils/supabase/public";
 import GlitchText from "@/components/GlitchText";
 import { CalendarIcon, UserIcon } from "@heroicons/react/24/outline";
-import { cookies } from 'next/headers';
 
-export const revalidate = 0;
+// Revalidate every hour or on-demand when an announcement is posted
+export const revalidate = 3600;
 
 type Announcement = {
   id: string;
@@ -27,35 +27,37 @@ const formatDate = (dateString: string) => {
 };
 
 export default async function Announcements() {
-  cookies();
+  const supabase = getPublicSupabase();
+  let announcements: Announcement[] = [];
 
-  const supabase = await createClient();
+  if (supabase) {
+    const { data, error } = await supabase
+      .from("announcements")
+      .select(
+        `
+        id,
+        created_at,
+        title,
+        description,
+        image_url,
+        created_by,
+        scheduled_at
+        `
+      )
+      .lte("scheduled_at", new Date().toISOString())
+      .order("scheduled_at", { ascending: false });
 
-  const { data: announcements, error } = await supabase
-    .from("announcements")
-    .select(
-      `
-      id,
-      created_at,
-      title,
-      description,
-      image_url,
-      created_by,
-      scheduled_at
-      `
-    )
-    .lte('scheduled_at', 'now()')
-    .order("scheduled_at", { ascending: false });
-
-  if (error) {
-    console.error("Error fetching announcements:", error);
-    return (
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center flex flex-col items-center min-h-screen">
-        <p className="text-red-500">
-          Could not fetch announcements. Please try again later.
-        </p>
-      </div>
-    );
+    if (error) {
+      console.error("Error fetching announcements:", error);
+      return (
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center flex flex-col items-center min-h-screen">
+          <p className="text-red-500">
+            Could not fetch announcements. Please try again later.
+          </p>
+        </div>
+      );
+    }
+    announcements = data || [];
   }
 
   if (!announcements || announcements.length === 0) {

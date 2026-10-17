@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { Trash, Edit, Plus, Save, X } from "lucide-react";
+import { revalidatePage } from "@/app/actions/revalidate";
 
 type Level = { id: string; name: string };
 type Member = {
@@ -50,6 +51,7 @@ export default function MemberList({
       setMembers((prev) => [...prev, data]);
       setNewUsername("");
       setNewLevel(levels[0]?.id || "");
+      await revalidatePage("/about");
     }
     setLoading(false);
   };
@@ -58,7 +60,10 @@ export default function MemberList({
   const removeMember = async (id: string) => {
     setLoading(true);
     const { error } = await supabase.from("members").delete().eq("id", id);
-    if (!error) setMembers((prev) => prev.filter((m) => m.id !== id));
+    if (!error) {
+      setMembers((prev) => prev.filter((m) => m.id !== id));
+      await revalidatePage("/about");
+    }
     setLoading(false);
   };
 
@@ -132,6 +137,7 @@ export default function MemberList({
                   prev.map((m) => (m.id === data.id ? data : m))
                 );
                 setIsEditing(false);
+                await revalidatePage("/about");
               }
               setLoading(false);
             };

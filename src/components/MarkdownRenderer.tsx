@@ -8,16 +8,20 @@ import remarkGfm from "remark-gfm";
 
 interface MarkdownRendererProps {
   contentUrl: string;
+  initialContent?: string;
 }
 
 export default function MarkdownRenderer({
   contentUrl,
+  initialContent,
 }: MarkdownRendererProps) {
-  const [content, setContent] = useState<string>("");
-  const [loading, setLoading] = useState(true);
+  const [content, setContent] = useState<string>(initialContent || "");
+  const [loading, setLoading] = useState(!initialContent);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (initialContent) return;
+
     const fetchContent = async () => {
       try {
         setLoading(true);
@@ -43,7 +47,7 @@ export default function MarkdownRenderer({
     if (contentUrl) {
       fetchContent();
     }
-  }, [contentUrl]);
+  }, [contentUrl, initialContent]);
 
   const MarkdownComponents = {
     code({ node, inline, className, children, ...props }: any) {
